@@ -108,7 +108,14 @@ def main():
     slots=get_all_slots(supa, service)
     keywords=sorted({r.get("rakuten_search_keyword","").strip() for r in slots if r.get("rakuten_search_keyword")})
     session=requests.Session()
-    session.headers.update({"accessKey":access,"Accept":"application/json","User-Agent":"CourseCodeWorker/4.0"})
+    origin=os.getenv("RAKUTEN_ORIGIN", "https://layrgolf.andmellow.jp").rstrip("/")
+    session.headers.update({
+        "accessKey":access,
+        "Accept":"application/json",
+        "User-Agent":"CourseCodeWorker/4.0",
+        "Origin":origin,
+        "Referer":origin + "/",
+    })
 
     done=0
     for keyword in keywords:
