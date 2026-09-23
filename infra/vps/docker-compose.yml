@@ -1,0 +1,15 @@
+services:
+  worker:
+    build:
+      context: ../../worker
+    env_file:
+      - .env
+    environment:
+      COURSE_CODE_DATA_DIR: /data
+      RAKUTEN_MIN_INTERVAL: ${RAKUTEN_MIN_INTERVAL:-0.8}
+    volumes:
+      - course_code_data:/data
+    network_mode: bridge
+
+volumes:
+  course_code_data:

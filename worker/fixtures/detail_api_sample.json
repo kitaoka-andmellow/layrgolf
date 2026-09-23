@@ -1,0 +1,20 @@
+{
+  "Item": {
+    "golfCourseId": 80004,
+    "golfCourseName": "アジア取手カントリー倶楽部",
+    "address": "茨城県取手市稲1340",
+    "shoes": "指定なし",
+    "dressCode": "Ｔシャツ、ジーパン、サンダルでの来場はご遠慮ください。",
+    "weekdayMinPrice": 5000,
+    "holidayMinPrice": 10000,
+    "designer": "浅見 緑蔵",
+    "courseType": "河川",
+    "courseVerticalInterval": "フラット",
+    "holeCount": 27,
+    "parCount": 108,
+    "courseDistance": "9458Y",
+    "ratingNum": 20933,
+    "evaluation": 3.3,
+    "reserveCalUrl": "https://search.gora.golf.rakuten.co.jp/cal/disp/c_id/80004"
+  }
+}

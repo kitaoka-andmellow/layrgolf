@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>COURSE CODE — ゴルフ場を、服装から選ぶ。</title>
+  <meta name="description" content="全国のゴルフ場を自然な言葉で検索。ドレスコード、難易度、料金、季節の服装まで一つの画面で比較。" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/"><span class="brand-mark">CC</span><span>COURSE CODE</span></a>
+    <span class="top-note">GOLF COURSE DIRECTORY / JAPAN</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-kicker">SEARCH BY THE WAY YOU PLAY</div>
+      <h1>ゴルフ場を、<br>服装から選ぶ。</h1>
+      <p>料金や難易度だけでなく、クラブハウスのしきたりと季節の装いまで。全国のコースを、自然な言葉で探せます。</p>
+      <form id="searchForm" class="searchbox">
+        <input id="query" autocomplete="off" placeholder="例：関西で1.3万円以下、初心者、ジャケット不要" />
+        <button type="submit">SEARCH</button>
+      </form>
+      <div class="examples">
+        <button data-q="関西で1.3万円以下、初心者、ジャケット不要">関西 / ¥13,000以下 / JACKET FREE</button>
+        <button data-q="夏涼しい、評価4以上、戦略的">COOL SUMMER / 評価4+</button>
+        <button data-q="関東 フォーマル デニム禁止">FORMAL / KANTO</button>
+      </div>
+    </section>
+
+    <section class="catalog">
+      <div class="catalog-head">
+        <div>
+          <div class="section-label">COURSE DIRECTORY</div>
+          <h2 id="resultTitle">全国のゴルフ場</h2>
+        </div>
+        <div id="resultCount" class="count"></div>
+      </div>
+      <div id="activeFilters" class="filter-summary"></div>
+      <div id="results" class="course-grid"><div class="loading">Loading courses…</div></div>
+      <div id="pager" class="pager"></div>
+    </section>
+  </main>
+  <footer>COURSE CODE — 公式情報と独自編集を分離して掲載しています。予約前に各ゴルフ場の最新規定をご確認ください。</footer>
+  <script type="module" src="/assets/app.js"></script>
+</body>
+</html>

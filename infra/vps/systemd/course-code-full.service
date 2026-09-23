@@ -1,0 +1,11 @@
+[Unit]
+Description=COURSE CODE weekly full Rakuten GORA detail sync
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/course-code/infra/vps
+ExecStart=/usr/bin/docker compose run --rm worker full
+TimeoutStartSec=10800

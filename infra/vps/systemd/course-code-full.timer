@@ -1,0 +1,10 @@
+[Unit]
+Description=Run COURSE CODE full detail sync every Sunday
+
+[Timer]
+OnCalendar=Sun *-*-* 04:00:00 Asia/Tokyo
+Persistent=true
+RandomizedDelaySec=600
+
+[Install]
+WantedBy=timers.target
