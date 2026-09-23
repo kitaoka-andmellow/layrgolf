@@ -5,6 +5,7 @@ import requests
 URL = "https://openapi.rakuten.co.jp/engine/api/Gora/GoraGolfCourseSearch/20170623"
 app = os.getenv("RAKUTEN_APP_ID") or input("Rakuten Application ID: ").strip()
 key = os.getenv("RAKUTEN_ACCESS_KEY") or getpass.getpass("Rakuten Access Key: ").strip()
+origin = os.getenv("RAKUTEN_ORIGIN", "https://layrgolf.andmellow.jp").rstrip("/")
 params = {
     "format":"json", "formatVersion":2, "applicationId":app,
     "areaCode":1, "hits":1, "page":1, "reservation":1,
@@ -13,7 +14,13 @@ params = {
 try:
     r = requests.get(
         URL, params=params, timeout=30,
-        headers={"Accept":"application/json","User-Agent":"CourseCodeJapan/4.0-auth-check","accessKey":key},
+        headers={
+            "Accept":"application/json",
+            "User-Agent":"CourseCodeJapan/4.0-auth-check",
+            "accessKey":key,
+            "Origin":origin,
+            "Referer":origin + "/",
+        },
     )
     print("HTTP", r.status_code)
     try:
@@ -22,7 +29,7 @@ try:
     except Exception:
         print(r.text[:4000])
     if r.status_code == 200:
-        print("OK: Rakuten GORA API access is enabled from this source IP.")
+        print(f"OK: Rakuten GORA API access is enabled for Origin {origin}.")
         sys.exit(0)
     if r.status_code == 403:
         print("\n403: Check Rakuten API access scopes AND the app's allowed source IPv4 address.")
