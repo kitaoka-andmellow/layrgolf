@@ -1,0 +1,23 @@
+# Production deploy checklist
+
+- [ ] Supabase project created
+- [ ] `001_init.sql` applied
+- [ ] `002_search_view.sql` applied
+- [ ] Vercel project points to `web/`
+- [ ] Vercel has only `SUPABASE_URL` + `SUPABASE_PUBLISHABLE_KEY`
+- [ ] Fixed IPv4 VPS created
+- [ ] VPS IPv4 registered in Rakuten allowed IP list
+- [ ] Rakuten GORA Search API scope enabled
+- [ ] Rakuten GORA Detail API scope enabled
+- [ ] Rakuten Ichiba Item Search scope enabled if ads are used
+- [ ] VPS `.env` populated
+- [ ] `check_rakuten_auth.py` returns HTTP 200
+- [ ] Initial `worker full` completed
+- [ ] Course count is approximately the current GORA nationwide count
+- [ ] Vercel `/api/health` returns `ok: true`
+- [ ] Search results display course images and dress levels
+- [ ] Detail page displays original dress-code text
+- [ ] GORA booking CTA opens the intended URL
+- [ ] Affiliate ID added and ad sync tested if monetization is enabled
+- [ ] systemd timers enabled
+- [ ] Access Key rotated before public launch if previously exposed
