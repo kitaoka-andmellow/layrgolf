@@ -1,0 +1,39 @@
+name: Bootstrap production tree
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".bootstrap/**"
+
+permissions:
+  contents: write
+
+jobs:
+  expand:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Expand production bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .bootstrap/part*.b64 | base64 -d > /tmp/course-code-production.zip
+          unzip -oq /tmp/course-code-production.zip -d .
+          rm -rf .bootstrap
+
+      - name: Commit production tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Expand COURSE CODE production stack"
+          git push
