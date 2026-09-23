@@ -174,6 +174,9 @@ class Client:
             # Keep the Access Key out of request URLs and error traces.
             "accessKey": self.access_key,
         })
+        origin = os.getenv("RAKUTEN_ORIGIN", "https://layrgolf.andmellow.jp").rstrip("/")
+        if origin:
+            self.s.headers.update({"Origin": origin, "Referer": origin + "/"})
         self.last_request = 0.0
 
     def get(self, url: str, params: dict[str, Any]) -> dict[str, Any]:
