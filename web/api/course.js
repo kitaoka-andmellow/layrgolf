@@ -4,8 +4,8 @@ function env(name) {
   return v;
 }
 async function sb(path) {
-  const base = env("SUPABASE_URL").replace(/\/$/, "");
-  const key = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY;
+  const base = (process.env.COURSE_SUPABASE_URL || env("SUPABASE_URL")).replace(/\/$/, "");
+  const key = process.env.COURSE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY;
   if (!key) throw new Error("SUPABASE_PUBLISHABLE_KEY is not configured");
   const r = await fetch(`${base}/rest/v1/${path}`, {headers:{apikey:key,Authorization:`Bearer ${key}`}});
   if (!r.ok) throw new Error(`Supabase ${r.status}: ${await r.text()}`);
