@@ -41,8 +41,8 @@ function env(name) {
 
 async function fetchAllCourses() {
   if (CACHE.rows && CACHE.expires > Date.now()) return CACHE.rows;
-  const base = env("SUPABASE_URL").replace(/\/$/, "");
-  const key = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY;
+  const base = (process.env.COURSE_SUPABASE_URL || env("SUPABASE_URL")).replace(/\/$/, "");
+  const key = process.env.COURSE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY;
   if (!key) throw new Error("SUPABASE_PUBLISHABLE_KEY is not configured");
   const rows = [];
   const page = 1000;
