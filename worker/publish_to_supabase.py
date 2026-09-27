@@ -64,11 +64,19 @@ class Supabase:
         if not rows:
             return
         for batch in chunks(rows, batch_size):
+            # PostgREST bulk inserts require every object in the JSON array to
+            # have the same set of keys. Rakuten omits empty fields, so pad
+            # missing keys with null within each request batch.
+            keys = set()
+            for row in batch:
+                keys.update(row.keys())
+            uniform_batch = [{k: row.get(k) for k in keys} for row in batch]
+
             r = self.s.post(
                 f"{self.base}/rest/v1/{table}",
                 params={"on_conflict": conflict},
                 headers={"Prefer": "resolution=merge-duplicates,return=minimal"},
-                json=batch,
+                json=uniform_batch,
                 timeout=60,
             )
             self._check(r)
