@@ -68,7 +68,7 @@ class Supabase:
                 f"{self.base}/rest/v1/{table}",
                 params={"on_conflict": conflict},
                 headers={"Prefer": "resolution=merge-duplicates,return=minimal"},
-                data=json.dumps(batch, ensure_ascii=False),
+                json=batch,
                 timeout=60,
             )
             self._check(r)
@@ -77,7 +77,7 @@ class Supabase:
         r = self.s.post(
             f"{self.base}/rest/v1/sync_runs",
             headers={"Prefer": "return=minimal"},
-            data=json.dumps([row], ensure_ascii=False), timeout=30,
+            json=[row], timeout=30,
         )
         self._check(r)
 
@@ -86,14 +86,14 @@ class Supabase:
             f"{self.base}/rest/v1/sync_runs",
             params={"sync_id": f"eq.{sync_id}"},
             headers={"Prefer": "return=minimal"},
-            data=json.dumps(patch, ensure_ascii=False), timeout=30,
+            json=patch, timeout=30,
         )
         self._check(r)
 
     def finalize(self, sync_id: str):
         r = self.s.post(
             f"{self.base}/rest/v1/rpc/course_code_finalize_sync",
-            data=json.dumps({"p_sync_id": sync_id}), timeout=60,
+            json={"p_sync_id": sync_id}, timeout=60,
         )
         self._check(r)
 
