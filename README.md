@@ -234,3 +234,5 @@ GORAの`dressCode`が空欄でも「服装自由」とは表示しません。`a
 詳細は `SECURITY.md` を参照してください。
 
 <!-- redeploy-trigger -->
+
+<!-- vercel-production-trigger-2026-09-27 -->
