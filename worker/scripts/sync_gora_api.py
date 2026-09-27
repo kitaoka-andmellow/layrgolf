@@ -414,7 +414,7 @@ def fetch_search(client: Client, only_pref: int|None=None) -> list[dict[str, Any
         page=1
         while True:
             payload=client.get(SEARCH_API, {
-                "areaCode":code, "hits":30, "page":page, "reservation":1,
+                "areaCode":code, "hits":30, "page":page, "reservation":0,
                 "elements":",".join(SEARCH_FIELDS)
             })
             items=api_items(payload)
