@@ -232,3 +232,5 @@ GORAの`dressCode`が空欄でも「服装自由」とは表示しません。`a
 - `.env` はGit管理しない
 
 詳細は `SECURITY.md` を参照してください。
+
+<!-- redeploy-trigger -->
