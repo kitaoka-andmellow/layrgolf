@@ -93,7 +93,7 @@ def patch_keyword(base: str, key: str, keyword: str, item: dict[str, Any]):
         f"{base.rstrip('/')}/rest/v1/affiliate_slots",
         params={"rakuten_search_keyword":f"eq.{keyword}", "source_type":"eq.rakuten_ichiba"},
         headers={"Prefer":"return=minimal"},
-        data=json.dumps(patch, ensure_ascii=False), timeout=60,
+        json=patch, timeout=60,
     )
     if r.status_code >= 400: raise RuntimeError(f"Supabase patch HTTP {r.status_code}: {r.text[:1000]}")
 
