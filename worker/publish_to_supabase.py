@@ -62,7 +62,10 @@ class Supabase:
 
     def upsert(self, table: str, rows: list[dict[str, Any]], conflict: str, batch_size: int = 100):
         if not rows:
+            print(f"[publish] {table}: 0 rows; skip", flush=True)
             return
+        total = len(rows)
+        done = 0
         for batch in chunks(rows, batch_size):
             # PostgREST bulk inserts require every object in the JSON array to
             # have the same set of keys. Rakuten omits empty fields, so pad
@@ -80,6 +83,8 @@ class Supabase:
                 timeout=60,
             )
             self._check(r)
+            done += len(batch)
+            print(f"[publish] {table}: {done}/{total}", flush=True)
 
     def insert_run(self, row: dict[str, Any]):
         r = self.s.post(
@@ -144,6 +149,7 @@ def main():
     courses = load_json(course_file)
     if not isinstance(courses, list) or not courses:
         raise SystemExit(f"No course rows found in {course_file}")
+    print(f"[publish] input={course_file} mode={args.mode} courses={len(courses)}", flush=True)
 
     sync_id = str(uuid.uuid4())
     db = Supabase(url, key)
@@ -174,6 +180,7 @@ def main():
             dress_count = sum(1 for r in courses if r.get("dress_code_raw"))
 
         if not args.no_finalize:
+            print("[publish] finalize nationwide sync", flush=True)
             db.finalize(sync_id)
 
         db.update_run(sync_id, {
