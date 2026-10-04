@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b1110" />
   <title>COURSE CODE — 全国のゴルフ場を探す</title>
   <meta name="description" content="全国2,278コースから、都道府県・キーワード・料金・難易度・ドレスコードでゴルフ場を検索。" />
   <link rel="stylesheet" href="/assets/styles.css" />
@@ -10,45 +11,47 @@
 <body>
   <header class="topbar">
     <a class="brand" href="/"><span class="brand-mark">CC</span><span>COURSE CODE</span></a>
-    <span class="top-note">GOLF COURSE DIRECTORY / JAPAN</span>
+    <div class="top-actions"><span class="top-note">GOLF COURSE DIRECTORY / JAPAN</span><a class="top-search-link" href="#catalog">SEARCH</a></div>
   </header>
 
   <main>
     <section class="hero">
-      <div class="hero-kicker">JAPAN GOLF COURSE DIRECTORY</div>
-      <h1>全国のゴルフ場を、<br>迷わず探す。</h1>
-      <p>都道府県とキーワードで絞り込み。料金・難易度・ドレスコードまで、ひとつの画面で比較できます。</p>
+      <div class="hero-grid"></div>
+      <div class="hero-orb orb-a"></div>
+      <div class="hero-orb orb-b"></div>
+      <div class="hero-inner">
+        <div class="hero-kicker"><span class="live-dot"></span> JAPAN COURSE DATABASE</div>
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <h1>PLAY<br><span>YOUR COURSE.</span></h1>
+            <p>全国のゴルフ場を、場所・価格・難易度・ドレスコードまで一気に比較。探す時間を短くして、選ぶ時間を楽しく。</p>
+          </div>
+          <aside class="hero-dashboard" aria-label="コースデータ概要">
+            <div class="hero-stat-main"><small>COURSES ONLINE</small><strong id="heroCourseCount">2,278</strong><span>全国の掲載コース</span></div>
+            <div class="hero-stat-grid"><div><b>47</b><span>PREFECTURES</span></div><div><b>LIVE</b><span>SEARCH API</span></div></div>
+          </aside>
+        </div>
 
-      <form id="searchForm" class="search-panel">
-        <label class="field field-pref">
-          <span>都道府県</span>
-          <select id="prefectureSelect" aria-label="都道府県">
-            <option value="">全国</option>
-          </select>
-        </label>
-        <label class="field field-keyword">
-          <span>キーワード</span>
-          <input id="query" autocomplete="off" placeholder="ゴルフ場名、初心者、1.3万円以下、ジャケット不要…" />
-        </label>
-        <button type="submit" class="search-submit">検索する</button>
-      </form>
+        <form id="searchForm" class="search-panel">
+          <label class="field field-pref"><span>AREA</span><select id="prefectureSelect" aria-label="都道府県"><option value="">全国から探す</option></select></label>
+          <label class="field field-keyword"><span>KEYWORD</span><input id="query" autocomplete="off" placeholder="ゴルフ場名、初心者、13,000円以下…" /></label>
+          <button type="submit" class="search-submit"><span>検索する</span><b>→</b></button>
+        </form>
 
-      <div class="quick-search">
-        <span>よく使う条件</span>
-        <button data-q="初心者">初心者向け</button>
-        <button data-q="ジャケット不要">ジャケット不要</button>
-        <button data-q="評価4以上">評価4以上</button>
-        <button data-q="1.3万円以下">13,000円以下</button>
-        <button data-q="夏涼しい">夏涼しい</button>
+        <div class="quick-search">
+          <span>QUICK FILTER</span>
+          <button data-q="初心者">初心者向け</button>
+          <button data-q="ジャケット不要">ジャケット不要</button>
+          <button data-q="評価4以上">評価4以上</button>
+          <button data-q="1.3万円以下">13,000円以下</button>
+          <button data-q="夏涼しい">夏涼しい</button>
+        </div>
       </div>
     </section>
 
     <section class="prefecture-browser">
       <div class="prefecture-browser-head">
-        <div>
-          <div class="section-label">SEARCH BY AREA</div>
-          <h2>都道府県から探す</h2>
-        </div>
+        <div><div class="section-label">EXPLORE JAPAN</div><h2>エリアから選ぶ</h2><p>地域を眺めながら、気になる都道府県をワンタップ。</p></div>
         <button id="clearPrefecture" class="text-button" type="button">全国に戻す</button>
       </div>
       <div id="regionGroups" class="region-groups" aria-live="polite"></div>
@@ -56,26 +59,15 @@
 
     <section class="catalog" id="catalog">
       <div class="catalog-head">
-        <div>
-          <div class="section-label">COURSE DIRECTORY</div>
-          <h2 id="resultTitle">全国のゴルフ場</h2>
-          <div id="activeFilters" class="filter-summary"></div>
-        </div>
-        <div class="catalog-tools">
-          <div id="resultCount" class="count"></div>
-          <select id="sortSelect" class="sort-select" aria-label="並び順">
-            <option value="recommended">おすすめ順</option>
-            <option value="rating">評価が高い順</option>
-            <option value="weekday_price">平日料金が安い順</option>
-            <option value="holiday_price">休日料金が安い順</option>
-          </select>
-        </div>
+        <div><div class="section-label">COURSE SELECT</div><h2 id="resultTitle">全国のゴルフ場</h2><div id="activeFilters" class="filter-summary"></div></div>
+        <div class="catalog-tools"><div id="resultCount" class="count"></div><select id="sortSelect" class="sort-select" aria-label="並び順"><option value="recommended">おすすめ順</option><option value="rating">評価が高い順</option><option value="weekday_price">平日料金が安い順</option><option value="holiday_price">休日料金が安い順</option></select></div>
       </div>
-      <div id="results" class="course-grid"><div class="loading">Loading courses…</div></div>
+      <div id="results" class="course-grid"><div class="loading">コースデータを読み込んでいます…</div></div>
       <div id="pager" class="pager"></div>
     </section>
   </main>
-  <footer>COURSE CODE — 公式情報と独自編集を分離して掲載しています。予約前に各ゴルフ場の最新規定をご確認ください。</footer>
+
+  <footer><span>COURSE CODE</span><small>公式情報と独自編集を分離して掲載しています。予約前に各ゴルフ場の最新規定をご確認ください。</small></footer>
   <script type="module" src="/assets/app.js"></script>
 </body>
 </html>
