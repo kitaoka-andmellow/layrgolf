@@ -31,7 +31,7 @@ const ORIGIN_MAP = {
 const COOL_SUMMER = new Set(["北海道","青森県","岩手県","秋田県","山形県","新潟県","長野県","宮城県","福島県","栃木県","群馬県","山梨県","富山県","石川県","福井県","岐阜県"]);
 
 let CACHE = { rows: null, expires: 0 };
-const CACHE_MS = 10 * 60 * 1000;
+const CACHE_MS = 60 * 1000;
 
 function env(name) {
   const v = process.env[name];
@@ -160,7 +160,7 @@ export default async function handler(req, res) {
       return (Number(b.evaluation)||0) - (Number(a.evaluation)||0);
     });
     const start = (page - 1) * limit;
-    res.setHeader("Cache-Control", "s-maxage=120, stale-while-revalidate=600");
+    res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate=60");
     res.status(200).json({
       query: q,
       parsed,
