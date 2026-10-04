@@ -560,3 +560,18 @@ body:not(.home) .brand-with-logo{flex-direction:column!important}
   .brand-with-logo img{width:112px}
   .reserve-primary{width:100%;min-width:0}
 }
+
+
+/* logo fidelity */
+.brand-with-logo{justify-content:center!important;align-items:flex-start!important}
+.brand-with-logo img{
+  width:190px!important;
+  height:auto!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:left center!important;
+}
+.brand-with-logo small{margin-top:1px!important}
+@media(max-width:620px){
+  .brand-with-logo img{width:150px!important}
+}
