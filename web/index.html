@@ -1,39 +1,74 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f5f6f2">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f7f5">
 <title>全国ゴルフ場検索 powered by LAYR GOLF</title>
-<meta name="description" content="誰と、どんな一日を過ごしたい？希望を文章で伝えて、写真・選んだ理由・服装の注意点からゴルフ場を比較。気になる3候補を同行者に共有できます。">
-<link rel="stylesheet" href="/assets/styles.css?v=round-20261004">
+<meta name="description" content="行きたいゴルフのイメージを文章で。全国のゴルフ場を写真・料金・評価・服装情報から探せます。">
+<link rel="stylesheet" href="/assets/styles.css?v=select-20261004">
 </head>
 <body class="home">
-<a class="skip-link" href="#searchForm">希望を入力する</a>
-<header class="topbar"><a class="brand" href="/" aria-label="全国ゴルフ場検索 トップ"><strong>全国ゴルフ場検索</strong><small>powered by <b>LAYR GOLF</b></small></a><button type="button" class="saved-button" id="openSaved" aria-haspopup="dialog">候補を見る <span id="savedCount">0</span></button></header>
+<header class="topbar">
+  <a class="brand" href="/">
+    <strong>全国ゴルフ場検索</strong>
+    <small>powered by LAYR GOLF</small>
+  </a>
+</header>
+
 <main>
-<section class="hero">
- <div class="hero-copy"><h1>そのメンバーに、<br><em>ちょうどいい</em><br>ゴルフを。</h1><p>誰と行くか、何を楽しみたいか。<br>希望をそのまま、文章で。</p></div>
- <figure class="hero-photo" id="heroPhoto"><div class="photo-fallback" aria-hidden="true"></div><img id="heroImage" alt="" hidden><figcaption id="heroCaption" hidden></figcaption><span class="photo-note">写真で出会って、<br>理由で選ぶ。</span></figure>
- <form id="searchForm" class="search-panel" role="search"><label for="query">次のラウンド、どんな一日にしたい？</label><div class="sentence-row"><textarea id="query" rows="2" maxlength="500" autocomplete="off" placeholder="例：熊本で、初心者の友達と。土日1万5千円以内で、景色も楽しみたい。"></textarea><button class="search-submit" type="submit">候補を探す <span aria-hidden="true">↗</span></button></div></form>
-</section>
-<section class="inspirations" aria-label="文章のヒント"><p>こんな一日から、考えてみる。</p><div class="scene-row">
- <button type="button" data-scene="easy" data-prompt="初心者の友達と、回りやすいコースで楽しみたい。"><span class="scene-art art-easy" aria-hidden="true">◎</span><span><b>はじめての仲間と</b><small>回りやすさを大事に</small></span><span class="scene-arrow" aria-hidden="true">↗</span></button>
- <button type="button" data-scene="scenic" data-prompt="景色がよくて、旅気分も楽しめるコース。"><span class="scene-art art-scenic" aria-hidden="true">◒</span><span><b>景色も、ごちそうに</b><small>日常から少し離れて</small></span><span class="scene-arrow" aria-hidden="true">↗</span></button>
- <button type="button" data-scene="challenge" data-prompt="戦略的なコースで、仲間と腕試しをしたい。"><span class="scene-art art-challenge" aria-hidden="true">⚑</span><span><b>今日は、腕試し</b><small>攻略する面白さを</small></span><span class="scene-arrow" aria-hidden="true">↗</span></button>
-</div></section>
-<section class="catalog" id="catalog" aria-labelledby="resultTitle" aria-busy="true">
- <div class="catalog-head"><div><p class="eyebrow" id="resultEyebrow">写真から、気になるコースへ。</p><h2 id="resultTitle">次の一日を見つける。</h2></div><div class="catalog-tools"><span id="resultCount" role="status" aria-live="polite"></span><label class="sr-only" for="sortSelect">並び順</label><select id="sortSelect"><option value="recommended">希望との相性順</option><option value="rating">評価が高い順</option><option value="weekday_price">平日料金が安い順</option><option value="holiday_price">土日祝料金が安い順</option></select></div></div>
- <div id="brief" class="brief" hidden><div id="activeFilters"></div><button id="clearQuery" type="button">希望を書き直す</button></div>
- <div id="searchNotes" class="search-notes" hidden></div><div id="results" class="course-grid"></div>
- <div id="moreArea" class="more-area" hidden><button id="showAll" type="button" class="secondary-button">ほかの候補も見る</button><p>まず3つから。気になるコースは比較用に残せます。</p></div>
- <nav id="pager" class="pager" aria-label="検索結果のページ"></nav>
- <p class="catalog-note">料金は掲載時点の最安目安です。プレー日・人数・追加料金は予約先でご確認ください。</p>
-</section>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="hero-index">全国 2,278 コース</p>
+      <h1>行きたいゴルフを、<br>そのまま書く。</h1>
+      <p class="hero-lead">場所、メンバー、予算、気分。条件を選ぶのではなく、次の一日を文章で伝えてください。</p>
+    </div>
+
+    <form id="searchForm" class="search-panel" role="search">
+      <label for="query">どんなゴルフにしたい？</label>
+      <div class="sentence-row">
+        <textarea id="query" rows="2" maxlength="500" autocomplete="off" placeholder="大阪から1時間くらい。初心者も一緒で、景色がよくて、土日1.3万円以内。"></textarea>
+        <button class="search-submit" type="submit">探す <span aria-hidden="true">→</span></button>
+      </div>
+      <p class="search-help">ゴルフ場名を知らなくても検索できます。</p>
+    </form>
+  </section>
+
+  <section class="catalog" id="catalog" aria-labelledby="resultTitle" aria-busy="true">
+    <div class="catalog-head">
+      <div>
+        <p class="eyebrow" id="resultEyebrow">COURSE LIST</p>
+        <h2 id="resultTitle">ゴルフ場を選ぶ。</h2>
+        <p id="activeFilters" class="interpreted"></p>
+      </div>
+      <div class="catalog-tools">
+        <span id="resultCount" role="status" aria-live="polite"></span>
+        <label class="sr-only" for="sortSelect">並び順</label>
+        <select id="sortSelect">
+          <option value="recommended">おすすめ順</option>
+          <option value="rating">評価が高い順</option>
+          <option value="weekday_price">平日料金が安い順</option>
+          <option value="holiday_price">土日祝料金が安い順</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="results" class="course-list"></div>
+
+    <div id="moreArea" class="more-area" hidden>
+      <button id="showAll" type="button">さらに表示 →</button>
+    </div>
+
+    <nav id="pager" class="pager" aria-label="検索結果のページ"></nav>
+    <p class="catalog-note">料金は取得時点の最安目安です。プレー日・人数・追加料金は予約先でご確認ください。</p>
+  </section>
 </main>
-<aside id="compareTray" class="compare-tray" aria-label="選んだ候補" hidden><div id="trayNames"></div><button id="compareButton" class="primary-button" type="button">並べて比べる</button></aside>
-<dialog id="compareDialog" aria-labelledby="compareTitle"><div class="dialog-head"><div><p class="eyebrow">このメンバーなら、どこにする？</p><h2 id="compareTitle">候補を並べてみる。</h2></div><button id="closeCompare" class="close-button" type="button" aria-label="比較を閉じる">×</button></div><div id="compareBody"></div><div class="dialog-actions"><button id="shareButton" class="primary-button" type="button">この候補を仲間に送る ↗</button><p>共有リンクには選んだコースだけを含め、入力した文章は含めません。</p></div></dialog>
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
-<footer><a href="https://layrgolf.andmellow.jp/">LAYR GOLF</a><p>写真・コース情報：楽天GORA。服装の記載がない場合も「自由」とは限りません。<br>提案理由は掲載情報を基にした参考です。予約リンクには広告を含みます。</p></footer>
-<noscript><p class="empty">検索にはJavaScriptを有効にしてください。</p></noscript>
-<script type="module" src="/assets/app.js?v=round-20261004"></script>
-</body></html>
+
+<footer>
+  <a href="https://layrgolf.andmellow.jp/">LAYR GOLF</a>
+  <p>写真・コース情報：楽天GORA。服装の記載がない場合も「自由」とは限りません。予約前に最新情報をご確認ください。</p>
+</footer>
+
+<script type="module" src="/assets/app.js?v=select-20261004"></script>
+</body>
+</html>
