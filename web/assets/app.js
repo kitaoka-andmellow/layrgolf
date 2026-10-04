@@ -27,7 +27,7 @@ const REGIONS = {
 
 function esc(s=""){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
 function yen(v){return v?`¥${Number(v).toLocaleString("ja-JP")}`:"—"}
-function img(c){return c.image_url_1 || "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560"><rect width="100%" height="100%" fill="#e9e9e5"/><text x="50%" y="50%" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="22">COURSE CODE</text></svg>')}
+function img(c){return c.image_url_1 || "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560"><rect width="100%" height="100%" fill="#e9e9e5"/><text x="50%" y="50%" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="22">全国ゴルフ場検索 powered by LAYR GOLF</text></svg>')}
 
 function card(c){
   const difficulty = esc(c.difficulty_label||"STANDARD");
