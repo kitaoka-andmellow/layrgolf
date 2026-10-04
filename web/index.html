@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>COURSE CODE — ゴルフ場を、服装から選ぶ。</title>
-  <meta name="description" content="全国のゴルフ場を自然な言葉で検索。ドレスコード、難易度、料金、季節の服装まで一つの画面で比較。" />
+  <title>COURSE CODE — 全国のゴルフ場を探す</title>
+  <meta name="description" content="全国2,278コースから、都道府県・キーワード・料金・難易度・ドレスコードでゴルフ場を検索。" />
   <link rel="stylesheet" href="/assets/styles.css" />
 </head>
 <body>
@@ -15,29 +15,62 @@
 
   <main>
     <section class="hero">
-      <div class="hero-kicker">SEARCH BY THE WAY YOU PLAY</div>
-      <h1>ゴルフ場を、<br>服装から選ぶ。</h1>
-      <p>料金や難易度だけでなく、クラブハウスのしきたりと季節の装いまで。全国のコースを、自然な言葉で探せます。</p>
-      <form id="searchForm" class="searchbox">
-        <input id="query" autocomplete="off" placeholder="例：関西で1.3万円以下、初心者、ジャケット不要" />
-        <button type="submit">SEARCH</button>
+      <div class="hero-kicker">JAPAN GOLF COURSE DIRECTORY</div>
+      <h1>全国のゴルフ場を、<br>迷わず探す。</h1>
+      <p>都道府県とキーワードで絞り込み。料金・難易度・ドレスコードまで、ひとつの画面で比較できます。</p>
+
+      <form id="searchForm" class="search-panel">
+        <label class="field field-pref">
+          <span>都道府県</span>
+          <select id="prefectureSelect" aria-label="都道府県">
+            <option value="">全国</option>
+          </select>
+        </label>
+        <label class="field field-keyword">
+          <span>キーワード</span>
+          <input id="query" autocomplete="off" placeholder="ゴルフ場名、初心者、1.3万円以下、ジャケット不要…" />
+        </label>
+        <button type="submit" class="search-submit">検索する</button>
       </form>
-      <div class="examples">
-        <button data-q="関西で1.3万円以下、初心者、ジャケット不要">関西 / ¥13,000以下 / JACKET FREE</button>
-        <button data-q="夏涼しい、評価4以上、戦略的">COOL SUMMER / 評価4+</button>
-        <button data-q="関東 フォーマル デニム禁止">FORMAL / KANTO</button>
+
+      <div class="quick-search">
+        <span>よく使う条件</span>
+        <button data-q="初心者">初心者向け</button>
+        <button data-q="ジャケット不要">ジャケット不要</button>
+        <button data-q="評価4以上">評価4以上</button>
+        <button data-q="1.3万円以下">13,000円以下</button>
+        <button data-q="夏涼しい">夏涼しい</button>
       </div>
     </section>
 
-    <section class="catalog">
+    <section class="prefecture-browser">
+      <div class="prefecture-browser-head">
+        <div>
+          <div class="section-label">SEARCH BY AREA</div>
+          <h2>都道府県から探す</h2>
+        </div>
+        <button id="clearPrefecture" class="text-button" type="button">全国に戻す</button>
+      </div>
+      <div id="regionGroups" class="region-groups" aria-live="polite"></div>
+    </section>
+
+    <section class="catalog" id="catalog">
       <div class="catalog-head">
         <div>
           <div class="section-label">COURSE DIRECTORY</div>
           <h2 id="resultTitle">全国のゴルフ場</h2>
+          <div id="activeFilters" class="filter-summary"></div>
         </div>
-        <div id="resultCount" class="count"></div>
+        <div class="catalog-tools">
+          <div id="resultCount" class="count"></div>
+          <select id="sortSelect" class="sort-select" aria-label="並び順">
+            <option value="recommended">おすすめ順</option>
+            <option value="rating">評価が高い順</option>
+            <option value="weekday_price">平日料金が安い順</option>
+            <option value="holiday_price">休日料金が安い順</option>
+          </select>
+        </div>
       </div>
-      <div id="activeFilters" class="filter-summary"></div>
       <div id="results" class="course-grid"><div class="loading">Loading courses…</div></div>
       <div id="pager" class="pager"></div>
     </section>
