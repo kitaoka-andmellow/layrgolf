@@ -2,11 +2,28 @@ const $ = s => document.querySelector(s);
 const results = $("#results");
 const form = $("#searchForm");
 const query = $("#query");
+const prefSelect = $("#prefectureSelect");
+const sortSelect = $("#sortSelect");
+const regionGroups = $("#regionGroups");
 const count = $("#resultCount");
 const title = $("#resultTitle");
 const filters = $("#activeFilters");
 const pager = $("#pager");
 let currentPage = 1;
+
+const REGIONS = {
+  "北海道":["北海道"],
+  "東北":["青森県","岩手県","宮城県","秋田県","山形県","福島県"],
+  "関東":["茨城県","栃木県","群馬県","埼玉県","千葉県","東京都","神奈川県"],
+  "甲信越":["新潟県","山梨県","長野県"],
+  "北陸":["富山県","石川県","福井県"],
+  "東海":["岐阜県","静岡県","愛知県","三重県"],
+  "関西":["滋賀県","京都府","大阪府","兵庫県","奈良県","和歌山県"],
+  "中国":["鳥取県","島根県","岡山県","広島県","山口県"],
+  "四国":["徳島県","香川県","愛媛県","高知県"],
+  "九州":["福岡県","佐賀県","長崎県","熊本県","大分県","宮崎県","鹿児島県"],
+  "沖縄":["沖縄県"]
+};
 
 function esc(s=""){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
 function yen(v){return v?`¥${Number(v).toLocaleString("ja-JP")}`:"—"}
@@ -40,25 +57,80 @@ function chips(p){
   if(p.coolSummer) xs.push("COOL SUMMER");
   filters.innerHTML=xs.map(x=>`<span class="filter-chip">${esc(x)}</span>`).join("");
 }
+function buildPrefectureUI(facets={}){
+  const prefs=Object.values(REGIONS).flat();
+  if(prefSelect.options.length===1){
+    prefs.forEach(p=>{
+      const o=document.createElement("option");
+      o.value=p;
+      o.textContent=p;
+      prefSelect.appendChild(o);
+    });
+  }
+  regionGroups.innerHTML=Object.entries(REGIONS).map(([region,list])=>{
+    const buttons=list.map(p=>{
+      const short=p.replace(/[都道府県]$/,"");
+      const active=prefSelect.value===p?" active":"";
+      return '<button type="button" class="pref-button'+active+'" data-pref="'+esc(p)+'"><span>'+esc(short)+'</span><small>'+Number(facets[p]||0).toLocaleString("ja-JP")+'</small></button>';
+    }).join("");
+    return '<div class="region-group"><div class="region-name">'+esc(region)+'</div><div class="pref-buttons">'+buttons+'</div></div>';
+  }).join("");
+  regionGroups.querySelectorAll("[data-pref]").forEach(b=>b.addEventListener("click",()=>{
+    prefSelect.value=b.dataset.pref;
+    load(1,true);
+  }));
+}
+
+function syncUrl(page){
+  const u=new URL(location.href);
+  const q=query.value.trim();
+  const pref=prefSelect.value;
+  const sort=sortSelect.value;
+  q?u.searchParams.set("q",q):u.searchParams.delete("q");
+  pref?u.searchParams.set("prefecture",pref):u.searchParams.delete("prefecture");
+  sort!=="recommended"?u.searchParams.set("sort",sort):u.searchParams.delete("sort");
+  page>1?u.searchParams.set("page",String(page)):u.searchParams.delete("page");
+  history.replaceState(null,"",u);
+}
+
 function renderPager(total, limit, page){
   const pages=Math.ceil(total/limit); if(pages<=1){pager.innerHTML="";return}
   const btn=[]; for(let p=Math.max(1,page-2);p<=Math.min(pages,page+2);p++) btn.push(`<button data-page="${p}" class="${p===page?'current':''}">${p}</button>`);
   pager.innerHTML=btn.join("");
-  pager.querySelectorAll("button").forEach(b=>b.onclick=()=>load(Number(b.dataset.page)));
+  pager.querySelectorAll("button").forEach(b=>b.onclick=()=>load(Number(b.dataset.page),true));
 }
-async function load(page=1){
-  currentPage=page; results.innerHTML='<div class="loading">Searching courses…</div>'; pager.innerHTML="";
+async function load(page=1, updateUrl=false){
+  currentPage=page; results.innerHTML='<div class="loading">ゴルフ場を検索しています…</div>'; pager.innerHTML="";
   const q=query.value.trim();
-  const r=await fetch(`/api/search?q=${encodeURIComponent(q)}&page=${page}&limit=24`);
+  const pref=prefSelect.value;
+  const sort=sortSelect.value;
+  const params=new URLSearchParams({q,page:String(page),limit:"24",sort});
+  if(pref) params.set("prefecture",pref);
+  const r=await fetch("/api/search?"+params.toString());
   const data=await r.json();
   if(!r.ok){results.innerHTML=`<div class="empty">検索APIエラー: ${esc(data.message||data.error)}</div>`;return}
-  count.textContent=`${data.total.toLocaleString("ja-JP")} COURSES`;
-  title.textContent=q?`「${q}」の検索結果`:"全国のゴルフ場";
+  if(updateUrl) syncUrl(page);
+  buildPrefectureUI(data.facets?.prefectures||{});
+  count.innerHTML='<strong>'+data.total.toLocaleString("ja-JP")+'</strong><span>件</span>';
+  title.textContent=pref?(pref+"のゴルフ場"):q?(`「${q}」の検索結果`):"全国のゴルフ場";
   chips(data.parsed);
-  results.innerHTML=data.items.length?data.items.map(card).join(""):'<div class="empty">条件に合うコースがありません。条件を少し緩めて検索してください。</div>';
+  results.innerHTML=data.items.length?data.items.map(card).join(""):'<div class="empty"><b>条件に一致するゴルフ場がありません</b><p>都道府県やキーワードを少し緩めて検索してください。</p><button id="resetEmpty" class="reset-button">条件をリセット</button></div>';
+  const reset=$("#resetEmpty");
+  if(reset) reset.onclick=()=>{query.value="";prefSelect.value="";sortSelect.value="recommended";load(1,true)};
   renderPager(data.total,data.limit,data.page);
   if(page>1) document.querySelector('.catalog').scrollIntoView({behavior:'smooth'});
 }
-form.addEventListener("submit",e=>{e.preventDefault();load(1)});
-document.querySelectorAll("[data-q]").forEach(b=>b.addEventListener("click",()=>{query.value=b.dataset.q;load(1)}));
-load();
+form.addEventListener("submit",e=>{e.preventDefault();load(1,true)});
+prefSelect.addEventListener("change",()=>load(1,true));
+sortSelect.addEventListener("change",()=>load(1,true));
+$("#clearPrefecture").addEventListener("click",()=>{prefSelect.value="";load(1,true)});
+document.querySelectorAll("[data-q]").forEach(b=>b.addEventListener("click",()=>{query.value=b.dataset.q;load(1,true)}));
+
+const initial=new URL(location.href);
+query.value=initial.searchParams.get("q")||"";
+sortSelect.value=initial.searchParams.get("sort")||"recommended";
+const initialPref=initial.searchParams.get("prefecture")||"";
+const initialPage=Math.max(1,Number(initial.searchParams.get("page")||1));
+load(initialPage,false).then(()=>{
+  if(initialPref){prefSelect.value=initialPref;load(initialPage,false)}
+});
