@@ -18,7 +18,7 @@ async function main(){
   if(!id){root.innerHTML='<div class="detail-loading">Invalid course ID</div>';return}
   const r=await fetch(`/api/course?id=${encodeURIComponent(id)}`); const d=await r.json();
   if(!r.ok){root.innerHTML=`<div class="detail-loading">${esc(d.message||d.error)}</div>`;return}
-  const c=d.course; document.title=`${c.course_name} | COURSE CODE`;
+  const c=d.course; document.title=`${c.course_name} | 全国ゴルフ場検索 powered by LAYR GOLF`;
   const img=c.image_url_1||c.image_url_2||'';
   const official=c.dress_code_raw||'楽天GORA上の服装指定は空欄です。服装自由を意味しません。予約前にゴルフ場公式情報をご確認ください。';
   const seasonOrder={spring:1,summer:2,autumn:3,winter:4}; d.seasons.sort((a,b)=>(seasonOrder[a.season]||9)-(seasonOrder[b.season]||9));
@@ -30,7 +30,7 @@ async function main(){
         <div class="eyebrow">${esc(c.prefecture)} / ${esc(c.course_type||'GOLF COURSE')}</div>
         <h1>${esc(c.course_name)}</h1>
         <div class="hero-nickname">“${esc(c.editorial_nickname||'地形と戦略を楽しむ一日')}”</div>
-        <div class="source-note">COURSE CODE独自編集 / 公式愛称ではありません</div>
+        <div class="source-note">全国ゴルフ場検索 powered by LAYR GOLF独自編集 / 公式愛称ではありません</div>
         <div class="facts-row">
           <div class="fact"><small>HOLES</small><strong>${c.hole_count??'—'}</strong></div>
           <div class="fact"><small>PAR</small><strong>${c.par_count??'—'}</strong></div>
@@ -44,7 +44,7 @@ async function main(){
         <section>
           <div class="section-title"><h2>ドレスコードを、先に読む。</h2><span>DRESS CODE / PRIORITY</span></div>
           <div class="dress-lead">
-            <div class="dress-level"><small>COURSE CODE INDEX</small><b>${esc(c.dress_level||'N/A')}</b></div>
+            <div class="dress-level"><small>全国ゴルフ場検索 powered by LAYR GOLF INDEX</small><b>${esc(c.dress_level||'N/A')}</b></div>
             <div class="official-rule"><b>RAKUTEN GORA / OFFICIAL DATA FIELD</b>${esc(official)}</div>
           </div>
           <div class="dress-icons">
@@ -62,7 +62,7 @@ async function main(){
           <div class="season-grid">
             ${d.seasons.map(s=>`<div class="season-card"><div class="season">${seasonName(s.season)}</div><h3>${esc(s.regional_condition)}</h3><p><b>${esc(s.wear_recommendation)}</b></p><p>${esc(s.etiquette_note)}</p></div>`).join('')}
           </div>
-          <div class="source-note">地域気候帯と服装規定を基にしたCOURSE CODE独自ガイドです。天候予報・公式規定を優先してください。</div>
+          <div class="source-note">地域気候帯と服装規定を基にした全国ゴルフ場検索 powered by LAYR GOLF独自ガイドです。天候予報・公式規定を優先してください。</div>
         </section>
         <section>
           <div class="section-title"><h2>このコースらしさ。</h2><span>COURSE CHARACTER</span></div>
