@@ -42,7 +42,7 @@ async function main(){
             <div><dt>ホール</dt><dd>${esc(c.hole_count||'—')}</dd></div>
           </dl>
           <div class="detail-actions">
-            ${c.gora_reserve_url?`<a class="reserve-link" href="${esc(c.gora_reserve_url)}" target="_blank" rel="nofollow sponsored noopener">楽天GORAで空き・料金を見る →</a>`:''}
+            ${c.gora_reserve_url?`<a class="reserve-link reserve-primary" href="${esc(c.gora_reserve_url)}" target="_blank" rel="nofollow sponsored noopener"><span>楽天GORAで予約する</span><small>空き枠・プレー日・人数を選ぶ</small><b>→</b></a>`:''}
             ${c.gora_detail_url?`<a class="plain-link" href="${esc(c.gora_detail_url)}" target="_blank" rel="nofollow noopener">楽天GORAの詳細情報</a>`:''}
           </div>
         </div>
@@ -109,7 +109,7 @@ async function main(){
             <p>${esc(c.course_name)}</p>
             <span>平日 ${yen(c.weekday_min_price_yen)}〜</span>
             <span>土日祝 ${yen(c.holiday_min_price_yen)}〜</span>
-            ${c.gora_reserve_url?`<a href="${esc(c.gora_reserve_url)}" target="_blank" rel="nofollow sponsored noopener">空き状況を見る →</a>`:''}
+            ${c.gora_reserve_url?`<a class="side-reserve" href="${esc(c.gora_reserve_url)}" target="_blank" rel="nofollow sponsored noopener">楽天GORAで予約する →</a>`:''}
           </div>
         </aside>
       </div>
