@@ -1,7 +1,9 @@
 const root=document.querySelector('#detailRoot');
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
 const yen=v=>Number(v)>0?`¥${Number(v).toLocaleString('ja-JP')}`:'要確認';
-const id=new URLSearchParams(location.search).get('id');
+const queryId=new URLSearchParams(location.search).get('id');
+const pathMatch=location.pathname.match(/\/course\/(\d{1,12})(?:\/)?$/);
+const id=queryId||(pathMatch?pathMatch[1]:'');
 
 function seasonName(s){return ({spring:'春',summer:'夏',autumn:'秋',winter:'冬'})[s]||s}
 function rule(label,value,positive,negative){
