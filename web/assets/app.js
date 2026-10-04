@@ -30,17 +30,18 @@ function yen(v){return v?`¥${Number(v).toLocaleString("ja-JP")}`:"—"}
 function img(c){return c.image_url_1 || "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560"><rect width="100%" height="100%" fill="#e9e9e5"/><text x="50%" y="50%" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="22">COURSE CODE</text></svg>')}
 
 function card(c){
+  const difficulty = esc(c.difficulty_label||"STANDARD");
   return `<a class="course-card" href="/course/${c.gora_course_id}">
-    <div class="course-thumb"><img loading="lazy" src="${esc(img(c))}" alt="${esc(c.course_name)}"><span class="dress-badge">${esc(c.dress_level||"DRESS N/A")}</span></div>
+    <div class="course-thumb"><img loading="lazy" src="${esc(img(c))}" alt="${esc(c.course_name)}"><div class="course-overlay"></div><span class="dress-badge">${esc(c.dress_level||"DRESS N/A")}</span><span class="course-level">${difficulty}</span></div>
     <div class="course-body">
       <div class="course-pref">${esc(c.prefecture)} / ${esc(c.course_type||"GOLF COURSE")}</div>
       <h3>${esc(c.course_name)}</h3>
       <div class="nickname">${esc(c.editorial_nickname||"")}</div>
       <div class="stats">
+        <div class="stat"><small>RATING</small><b>${c.evaluation?`★ ${Number(c.evaluation).toFixed(1)}`:"—"}</b></div>
         <div class="stat"><small>WEEKDAY</small><b>${yen(c.weekday_min_price_yen)}</b></div>
         <div class="stat"><small>HOLES</small><b>${c.hole_count??"—"}</b></div>
-        <div class="stat"><small>DIFFICULTY</small><b>${esc(c.difficulty_label||"—")}</b></div>
-      </div>
+      </div><div class="card-cta"><span>COURSE DETAIL</span><b>↗</b></div>
     </div>
   </a>`;
 }
@@ -111,6 +112,7 @@ async function load(page=1, updateUrl=false){
   if(!r.ok){results.innerHTML=`<div class="empty">検索APIエラー: ${esc(data.message||data.error)}</div>`;return}
   if(updateUrl) syncUrl(page);
   buildPrefectureUI(data.facets?.prefectures||{});
+  const heroCount=$("#heroCourseCount"); if(heroCount && data.totalCourses) heroCount.textContent=data.totalCourses.toLocaleString("ja-JP");
   count.innerHTML='<strong>'+data.total.toLocaleString("ja-JP")+'</strong><span>件</span>';
   title.textContent=pref?(pref+"のゴルフ場"):q?(`「${q}」の検索結果`):"全国のゴルフ場";
   chips(data.parsed);
