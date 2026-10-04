@@ -1,73 +1,39 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0b1110" />
-  <title>全国ゴルフ場検索 powered by LAYR GOLF — 全国のゴルフ場を探す</title>
-  <meta name="description" content="全国2,278コースから、都道府県・キーワード・料金・難易度・ドレスコードでゴルフ場を検索。" />
-  <link rel="stylesheet" href="/assets/styles.css" />
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f6f2">
+<title>全国ゴルフ場検索 powered by LAYR GOLF</title>
+<meta name="description" content="誰と、どんな一日を過ごしたい？希望を文章で伝えて、写真・選んだ理由・服装の注意点からゴルフ場を比較。気になる3候補を同行者に共有できます。">
+<link rel="stylesheet" href="/assets/styles.css?v=round-20261004">
 </head>
-<body>
-  <header class="topbar">
-    <a class="brand" href="/"><span>全国ゴルフ場検索 powered by LAYR GOLF</span></a>
-    <div class="top-actions"><span class="top-note">GOLF COURSE DIRECTORY / JAPAN</span><a class="top-search-link" href="#catalog">SEARCH</a></div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="hero-grid"></div>
-      <div class="hero-orb orb-a"></div>
-      <div class="hero-orb orb-b"></div>
-      <div class="hero-inner">
-        <div class="hero-kicker"><span class="live-dot"></span> JAPAN COURSE DATABASE</div>
-        <div class="hero-layout">
-          <div class="hero-copy">
-            <h1>PLAY<br><span>YOUR COURSE.</span></h1>
-            <p>全国のゴルフ場を、場所・価格・難易度・ドレスコードまで一気に比較。探す時間を短くして、選ぶ時間を楽しく。</p>
-          </div>
-          <aside class="hero-dashboard" aria-label="コースデータ概要">
-            <div class="hero-stat-main"><small>COURSES ONLINE</small><strong id="heroCourseCount">2,278</strong><span>全国の掲載コース</span></div>
-            <div class="hero-stat-grid"><div><b>47</b><span>PREFECTURES</span></div><div><b>LIVE</b><span>SEARCH API</span></div></div>
-          </aside>
-        </div>
-
-        <form id="searchForm" class="search-panel">
-          <label class="field field-pref"><span>AREA</span><select id="prefectureSelect" aria-label="都道府県"><option value="">全国から探す</option></select></label>
-          <label class="field field-keyword"><span>KEYWORD</span><input id="query" autocomplete="off" placeholder="ゴルフ場名、初心者、13,000円以下…" /></label>
-          <button type="submit" class="search-submit"><span>検索する</span><b>→</b></button>
-        </form>
-
-        <div class="quick-search">
-          <span>QUICK FILTER</span>
-          <button data-q="初心者">初心者向け</button>
-          <button data-q="ジャケット不要">ジャケット不要</button>
-          <button data-q="評価4以上">評価4以上</button>
-          <button data-q="1.3万円以下">13,000円以下</button>
-          <button data-q="夏涼しい">夏涼しい</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="prefecture-browser">
-      <div class="prefecture-browser-head">
-        <div><div class="section-label">EXPLORE JAPAN</div><h2>エリアから選ぶ</h2><p>地域を眺めながら、気になる都道府県をワンタップ。</p></div>
-        <button id="clearPrefecture" class="text-button" type="button">全国に戻す</button>
-      </div>
-      <div id="regionGroups" class="region-groups" aria-live="polite"></div>
-    </section>
-
-    <section class="catalog" id="catalog">
-      <div class="catalog-head">
-        <div><div class="section-label">COURSE SELECT</div><h2 id="resultTitle">全国のゴルフ場</h2><div id="activeFilters" class="filter-summary"></div></div>
-        <div class="catalog-tools"><div id="resultCount" class="count"></div><select id="sortSelect" class="sort-select" aria-label="並び順"><option value="recommended">おすすめ順</option><option value="rating">評価が高い順</option><option value="weekday_price">平日料金が安い順</option><option value="holiday_price">休日料金が安い順</option></select></div>
-      </div>
-      <div id="results" class="course-grid"><div class="loading">コースデータを読み込んでいます…</div></div>
-      <div id="pager" class="pager"></div>
-    </section>
-  </main>
-
-  <footer><span>全国ゴルフ場検索 powered by LAYR GOLF</span><small>公式情報と独自編集を分離して掲載しています。予約前に各ゴルフ場の最新規定をご確認ください。</small></footer>
-  <script type="module" src="/assets/app.js"></script>
-</body>
-</html>
+<body class="home">
+<a class="skip-link" href="#searchForm">希望を入力する</a>
+<header class="topbar"><a class="brand" href="/" aria-label="全国ゴルフ場検索 トップ"><strong>全国ゴルフ場検索</strong><small>powered by <b>LAYR GOLF</b></small></a><button type="button" class="saved-button" id="openSaved" aria-haspopup="dialog">候補を見る <span id="savedCount">0</span></button></header>
+<main>
+<section class="hero">
+ <div class="hero-copy"><h1>そのメンバーに、<br><em>ちょうどいい</em><br>ゴルフを。</h1><p>誰と行くか、何を楽しみたいか。<br>希望をそのまま、文章で。</p></div>
+ <figure class="hero-photo" id="heroPhoto"><div class="photo-fallback" aria-hidden="true"></div><img id="heroImage" alt="" hidden><figcaption id="heroCaption" hidden></figcaption><span class="photo-note">写真で出会って、<br>理由で選ぶ。</span></figure>
+ <form id="searchForm" class="search-panel" role="search"><label for="query">次のラウンド、どんな一日にしたい？</label><div class="sentence-row"><textarea id="query" rows="2" maxlength="500" autocomplete="off" placeholder="例：熊本で、初心者の友達と。土日1万5千円以内で、景色も楽しみたい。"></textarea><button class="search-submit" type="submit">候補を探す <span aria-hidden="true">↗</span></button></div></form>
+</section>
+<section class="inspirations" aria-label="文章のヒント"><p>こんな一日から、考えてみる。</p><div class="scene-row">
+ <button type="button" data-scene="easy" data-prompt="初心者の友達と、回りやすいコースで楽しみたい。"><span class="scene-art art-easy" aria-hidden="true">◎</span><span><b>はじめての仲間と</b><small>回りやすさを大事に</small></span><span class="scene-arrow" aria-hidden="true">↗</span></button>
+ <button type="button" data-scene="scenic" data-prompt="景色がよくて、旅気分も楽しめるコース。"><span class="scene-art art-scenic" aria-hidden="true">◒</span><span><b>景色も、ごちそうに</b><small>日常から少し離れて</small></span><span class="scene-arrow" aria-hidden="true">↗</span></button>
+ <button type="button" data-scene="challenge" data-prompt="戦略的なコースで、仲間と腕試しをしたい。"><span class="scene-art art-challenge" aria-hidden="true">⚑</span><span><b>今日は、腕試し</b><small>攻略する面白さを</small></span><span class="scene-arrow" aria-hidden="true">↗</span></button>
+</div></section>
+<section class="catalog" id="catalog" aria-labelledby="resultTitle" aria-busy="true">
+ <div class="catalog-head"><div><p class="eyebrow" id="resultEyebrow">写真から、気になるコースへ。</p><h2 id="resultTitle">次の一日を見つける。</h2></div><div class="catalog-tools"><span id="resultCount" role="status" aria-live="polite"></span><label class="sr-only" for="sortSelect">並び順</label><select id="sortSelect"><option value="recommended">希望との相性順</option><option value="rating">評価が高い順</option><option value="weekday_price">平日料金が安い順</option><option value="holiday_price">土日祝料金が安い順</option></select></div></div>
+ <div id="brief" class="brief" hidden><div id="activeFilters"></div><button id="clearQuery" type="button">希望を書き直す</button></div>
+ <div id="searchNotes" class="search-notes" hidden></div><div id="results" class="course-grid"></div>
+ <div id="moreArea" class="more-area" hidden><button id="showAll" type="button" class="secondary-button">ほかの候補も見る</button><p>まず3つから。気になるコースは比較用に残せます。</p></div>
+ <nav id="pager" class="pager" aria-label="検索結果のページ"></nav>
+ <p class="catalog-note">料金は掲載時点の最安目安です。プレー日・人数・追加料金は予約先でご確認ください。</p>
+</section>
+</main>
+<aside id="compareTray" class="compare-tray" aria-label="選んだ候補" hidden><div id="trayNames"></div><button id="compareButton" class="primary-button" type="button">並べて比べる</button></aside>
+<dialog id="compareDialog" aria-labelledby="compareTitle"><div class="dialog-head"><div><p class="eyebrow">このメンバーなら、どこにする？</p><h2 id="compareTitle">候補を並べてみる。</h2></div><button id="closeCompare" class="close-button" type="button" aria-label="比較を閉じる">×</button></div><div id="compareBody"></div><div class="dialog-actions"><button id="shareButton" class="primary-button" type="button">この候補を仲間に送る ↗</button><p>共有リンクには選んだコースだけを含め、入力した文章は含めません。</p></div></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<footer><a href="https://layrgolf.andmellow.jp/">LAYR GOLF</a><p>写真・コース情報：楽天GORA。服装の記載がない場合も「自由」とは限りません。<br>提案理由は掲載情報を基にした参考です。予約リンクには広告を含みます。</p></footer>
+<noscript><p class="empty">検索にはJavaScriptを有効にしてください。</p></noscript>
+<script type="module" src="/assets/app.js?v=round-20261004"></script>
+</body></html>
