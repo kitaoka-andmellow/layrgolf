@@ -149,22 +149,38 @@ export default async function handler(req, res) {
   try {
     const url = new URL(req.url, "https://local.invalid");
     const q = url.searchParams.get("q") || "";
+    const prefecture = url.searchParams.get("prefecture") || "";
+    const sort = url.searchParams.get("sort") || "recommended";
     const page = Math.max(1, parseInt(url.searchParams.get("page") || "1", 10));
     const limit = Math.min(48, Math.max(6, parseInt(url.searchParams.get("limit") || "24", 10)));
     const parsed = parseQuery(q);
+    if (prefecture && PREFS.includes(prefecture)) parsed.prefectures = [prefecture];
+
     const all = await fetchAllCourses();
     const filtered = all.filter(c => filterCourse(c, parsed));
+
     filtered.sort((a,b) => {
+      if (sort === "rating") return (Number(b.evaluation)||0) - (Number(a.evaluation)||0);
+      if (sort === "weekday_price") return (number(a.weekday_min_price_yen) ?? Number.MAX_SAFE_INTEGER) - (number(b.weekday_min_price_yen) ?? Number.MAX_SAFE_INTEGER);
+      if (sort === "holiday_price") return (number(a.holiday_min_price_yen) ?? Number.MAX_SAFE_INTEGER) - (number(b.holiday_min_price_yen) ?? Number.MAX_SAFE_INTEGER);
       const d = scoreCourse(b, parsed) - scoreCourse(a, parsed);
       if (d) return d;
       return (Number(b.evaluation)||0) - (Number(a.evaluation)||0);
     });
+
+    const facetCounts = {};
+    for (const c of all) facetCounts[c.prefecture] = (facetCounts[c.prefecture] || 0) + 1;
+
     const start = (page - 1) * limit;
     res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate=60");
     res.status(200).json({
       query: q,
       parsed,
+      selectedPrefecture: prefecture,
+      sort,
+      totalCourses: all.length,
       total: filtered.length,
+      facets: { prefectures: facetCounts },
       page,
       limit,
       items: filtered.slice(start, start + limit)
