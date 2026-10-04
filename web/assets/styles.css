@@ -519,3 +519,44 @@ body:not(.home) .saved-button{border:0;border-bottom:1px solid #1b211d;border-ra
   .spec-grid{grid-template-columns:repeat(2,1fr)}
   .rule-row{grid-template-columns:120px 1fr}
 }
+
+
+/* LAYR logo + clearer reservation path */
+.brand-with-logo{display:flex!important;align-items:flex-start!important;gap:7px!important;letter-spacing:0!important}
+.brand-with-logo img{display:block;width:132px;height:auto;object-fit:contain}
+.brand-with-logo small{font-size:9px!important;color:#747b76!important;letter-spacing:.02em!important;line-height:1.2}
+.home .brand-with-logo{flex-direction:column!important}
+body:not(.home) .brand-with-logo{flex-direction:column!important}
+
+.reserve-primary{
+  display:grid!important;
+  grid-template-columns:1fr auto;
+  grid-template-areas:"title arrow" "sub arrow";
+  align-items:center;
+  min-width:260px;
+  background:#171b18;
+  color:#fff!important;
+  padding:15px 18px!important;
+  border:0!important;
+  text-decoration:none!important;
+}
+.reserve-primary span{grid-area:title;font-size:13px;font-weight:700}
+.reserve-primary small{grid-area:sub;font-size:9px;color:#c9cfca;margin-top:2px}
+.reserve-primary b{grid-area:arrow;font-size:18px;font-weight:400}
+.reserve-primary:hover{background:#000}
+.side-reserve{
+  display:block!important;
+  background:#171b18!important;
+  color:#fff!important;
+  padding:13px 14px!important;
+  border:0!important;
+  text-align:left;
+  font-size:11px!important;
+  font-weight:700!important;
+}
+.side-reserve:hover{background:#000!important}
+
+@media(max-width:620px){
+  .brand-with-logo img{width:112px}
+  .reserve-primary{width:100%;min-width:0}
+}
