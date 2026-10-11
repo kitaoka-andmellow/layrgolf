@@ -17,3 +17,62 @@
 .retry-search{display:inline-block;margin-top:14px;padding:8px 0;border:0;border-bottom:1px solid var(--ink);background:transparent;color:var(--ink);font-size:13px;font-weight:650}
 
 .gallery-extra.gallery-count-1{grid-template-columns:1fr}.gallery-extra.gallery-count-3 figure:first-child{grid-column:1/-1}
+
+
+/* LAYR brand and search polish — October 2026 */
+.site-brand{justify-content:center;min-width:0}
+.site-brand img{display:block!important;width:185px!important;max-width:none!important;max-height:none!important;height:auto!important;aspect-ratio:2048/682;object-fit:contain!important;object-position:left center!important;transform:none!important}
+.site-brand small{margin-top:-3px;letter-spacing:.04em}
+.site-brand.brand-image-unavailable{position:relative}
+.site-brand.brand-image-unavailable::before{content:"LAYR GOLF";font-size:19px;font-weight:750;letter-spacing:.14em}
+/* White pixels in the supplied GORA artwork visually disappear into the page surface. */
+.footer-source img,.gora-reserve-brand img{mix-blend-mode:multiply;isolation:auto}
+.footer-source{background:transparent}
+.book-btn .gora-reserve-brand{display:flex;align-items:center;justify-content:center;flex-shrink:0;min-width:79px}
+.book-btn{background:var(--bg);border-color:#cdd4cb}
+.book-btn:hover{background:#e8ede6}
+.home-image,.promo-photo{overflow:hidden}
+.home-image{background:#e3e8df}
+.promo-photo{display:block;position:relative;min-height:340px}
+.promo-photo img{object-position:center 28%}
+.home-image.brand-image-unavailable::before,.promo-photo.brand-image-unavailable::before{content:"LAYR GOLF";position:absolute;z-index:1;inset:0;display:grid;place-items:center;font-size:32px;font-weight:300;letter-spacing:.16em;color:#344236}
+.search-panel-featured{
+  margin-top:46px;
+  padding:31px 35px 28px;
+  background:#fff;
+  border:1px solid #d4d9d3;
+  border-left:4px solid #161d18;
+  box-shadow:0 16px 42px rgba(35,52,38,.055);
+  display:block;
+}
+.search-panel-featured .search-section-label{font-size:10px;font-weight:650;letter-spacing:.12em;color:#67716a;margin:0 0 7px}
+.search-panel-featured label{font-size:clamp(18px,2.05vw,25px);letter-spacing:-.025em;margin-bottom:16px}
+.search-panel-featured textarea{
+  width:100%;min-height:90px;resize:vertical;border:0;
+  border-bottom:1px solid #b8c4ba;
+  font-size:clamp(16px,1.8vw,19px);line-height:1.85;padding:9px 0 18px;
+}
+.search-panel-featured textarea:focus{border-bottom:2px solid #171e1a}
+.search-actions{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:20px}
+.date-preview{font-size:12px;color:#6b766d;margin:0;line-height:1.7}
+.date-preview.has-date{color:#28543a;font-weight:650}
+.search-panel-featured .search-submit{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:32px;min-width:210px;min-height:50px;padding:10px 18px;
+  border:1px solid #171e1a;background:#171e1a;color:#fff;
+  font-size:13px;font-weight:700;transition:background .15s;
+}
+.search-panel-featured .search-submit:hover{transform:none;background:#3a4740;border-color:#3a4740}
+.search-panel-featured .search-submit>span{font-size:20px;font-weight:400}
+.wished-date{font-size:12px;font-weight:650;color:#3a5340;padding:12px 0;border-bottom:1px solid var(--rule)}
+.booking-wished-date{font-size:12px;font-weight:650;color:#2f4c39;padding:10px 0}
+.booking-wished-date small{display:block;font-weight:400;color:#6f786f;font-size:10px;margin-top:3px}
+@media(max-width:700px){
+  .site-brand img{width:145px!important}
+  .site-brand small{margin-top:-6px;font-size:9px}
+  .search-panel-featured{margin-top:16px;padding:22px 19px;border-left-width:3px}
+  .search-panel-featured textarea{min-height:125px}
+  .search-actions{flex-direction:column;align-items:stretch;gap:10px}
+  .search-panel-featured .search-submit{width:100%;min-width:0}
+  .promo-photo{min-height:250px}
+}
