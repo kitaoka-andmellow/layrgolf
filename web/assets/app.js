@@ -110,7 +110,7 @@ async function load(page=1,scroll=false){
     syncUrl();render(data);
     if(scroll)$("#catalog").scrollIntoView({behavior:"smooth",block:"start"});
   }catch{
-    results.innerHTML='<div class="empty"><h3>読み込みに失敗しました。</h3><p>少し待って、もう一度お試しください。</p></div>';
+    results.innerHTML='<div class="empty"><h3>ただいま検索結果を取得できません。</h3><p>データベースの停止中や通信エラーの場合があります。少し待って、再度お試しください。</p><button id="retrySearch" class="retry-search" type="button">もう一度読み込む →</button></div>';
     count.textContent="";
   }
 }
@@ -120,6 +120,7 @@ $("#showAll").addEventListener("click",()=>{expanded=true;if(lastData)render(las
 document.addEventListener("click",e=>{
   const p=e.target.closest("[data-page]");
   if(p&&!p.disabled) load(Number(p.dataset.page),true);
+  if(e.target.closest("#retrySearch"))load(currentPage,false);
 });
 const initial=new URL(location.href);
 query.value=initial.searchParams.get("q")||"";
