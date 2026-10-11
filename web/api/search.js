@@ -1,3 +1,4 @@
+import {parseJapaneseDate} from "../assets/round-date.js";
 const PREFS = [
   "北海道","青森県","岩手県","宮城県","秋田県","山形県","福島県","茨城県","栃木県","群馬県","埼玉県","千葉県","東京都","神奈川県",
   "新潟県","富山県","石川県","福井県","山梨県","長野県","岐阜県","静岡県","愛知県","三重県","滋賀県","京都府","大阪府","兵庫県",
@@ -72,6 +73,15 @@ export function parseQuery(raw) {
   if (/土日|休日|週末/.test(q)) parsed.priceMode = "holiday";
   else if (/平日/.test(q)) parsed.priceMode = "weekday";
   else parsed.priceMode = "weekday";
+  const day=parseJapaneseDate(q);
+  if(day&&!day.past){
+    parsed.playDate=day.iso;
+    parsed.playDateLabel=day.label;
+    // Price is an ordinary listed benchmark, not a plan confirmed for this day.
+    if(!/土日|休日|週末|平日/.test(q))parsed.priceMode=day.weekend?"holiday":"weekday";
+  }else if(day?.past){
+    parsed.dateWarning="過去の日付です。";
+  }
 
   for (const p of PREFS) {
     const short = p.replace(/[都道府県]$/, "");
@@ -118,7 +128,8 @@ function scoreCourse(c, p) {
   const text = [c.course_name,c.course_name_abbr,c.course_caption,c.address,c.editorial_nickname,c.editorial_feature_summary,c.course_type,c.highway].filter(Boolean).join(" ").toLowerCase();
   for (const term of p.terms) if (text.includes(term.toLowerCase())) score += 9;
   if (p.prefectures.includes(c.prefecture)) score += 12;
-  if (p.budget && number(c.weekday_min_price_yen) && number(c.weekday_min_price_yen) <= p.budget) score += 6;
+  const refPrice = p.priceMode === "holiday" ? number(c.holiday_min_price_yen) : number(c.weekday_min_price_yen);
+  if (p.budget && refPrice && refPrice <= p.budget) score += 6;
   if (c.evaluation) score += Math.min(10, Number(c.evaluation) * 1.5);
   if (c.review_count) score += Math.min(5, Math.log10(Number(c.review_count) + 1));
   return score;
@@ -128,8 +139,8 @@ export function filterCourse(c, p) {
   if (p.prefectures.length && !p.prefectures.includes(c.prefecture)) return false;
   if (p.budget) {
     const price = p.priceMode === "holiday"
-      ? (number(c.holiday_min_price_yen) ?? number(c.weekday_min_price_yen))
-      : (number(c.weekday_min_price_yen) ?? number(c.holiday_min_price_yen));
+      ? number(c.holiday_min_price_yen)
+      : number(c.weekday_min_price_yen);
     if (!price || price > p.budget) return false;
   }
   const diff = number(c.difficulty_index);
