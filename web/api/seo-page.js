@@ -86,8 +86,14 @@ function seasons(items){
  (ordered.length?"<div class='season-list'>"+ordered.map(s=>"<div><b>"+season[s.season]+"</b><p>"+E(plain(s.wear_recommendation)||"季節に合う装備をご確認ください。")+"</p>"+(s.etiquette_note?"<small>"+E(plain(s.etiquette_note))+"</small>":"")+"</div>").join("")+"</div>":"<p class='content-copy'>季節ごとの服装目安は準備中です。</p>")+
  "<p class='small-note'>服装の目安であり、当日の天気予報やゴルフ場の規定を保証するものではありません。</p></div></section>";
 }
-function gear(items){
- const filtered=items.filter(a=>safeUrl(a.target_url)).slice(0,3);
+function gear(items,wishedDate=""){
+ const month=Number((wishedDate||"").split("-")[1])||Number(new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",month:"numeric"}).format(new Date()));
+ const season=month===12||month<=2?"winter":month>=6&&month<=9?"summer":month>=3&&month<=5?"spring":"autumn";
+ const scoped=items.filter(a=>safeUrl(a.target_url)&&(a.season==="all"||!a.season||a.season===season));
+ const priority=a=>a.slot?.includes("accessory_glove")?0:a.slot?.includes("accessory_ball")?1:a.category==="footwear"?2:a.season===season?3:4;
+ scoped.sort((a,b)=>priority(a)-priority(b));
+ const unique=new Set();
+ const filtered=scoped.filter(a=>{const key=a.item_code||a.target_url;if(unique.has(key))return false;unique.add(key);return true;}).slice(0,4);
  if(!filtered.length)return "";
  return "<section class='editorial-section' id='gear'><div class='section-label'>04 / GEAR</div><div><h2>ラウンドの準備に。</h2><div class='gear-items'>"+
  filtered.map(a=>"<a href='"+E(safeUrl(a.target_url))+"' target='_blank' rel='sponsored nofollow noopener noreferrer'>"+
@@ -105,17 +111,20 @@ function card(c){
  return "<article class='directory-card'><a class='directory-photo' href='"+href+"'>"+(image?"<img src='"+E(image)+"' alt='"+E(c.course_name)+"' loading='lazy'>":"<div class='photo-empty'>写真は準備中</div>")+"</a><div><p class='overline'>"+E(c.prefecture)+"</p><h3><a href='"+href+"'>"+E(c.course_name)+"</a></h3>"+
  "<p>"+E(plain(c.editorial_feature_summary||c.course_caption).slice(0,80))+"</p><div class='card-facts'><span>評価 "+E(Number(c.evaluation)>0?Number(c.evaluation).toFixed(1):"—")+"</span><span>平日 "+E(yen(c.weekday_min_price_yen))+"</span></div><a class='line-link' href='"+href+"'>コースの詳細を見る →</a></div></article>";
 }
-export function detailHTML(data,nearby=[]){
+export function detailHTML(data,nearby=[],wishedDate=""){
  const c=data.course,id=String(c.gora_course_id),path="/course/"+id,pre=c.prefecture;
+ const selectedDate=parseJapaneseDate(wishedDate);
+ const playDate=selectedDate&&!selectedDate.past?selectedDate:null;
+ const dateHTML=playDate?"<p class='booking-wished-date'>希望日："+E(playDate.label)+"<small>この日の空き枠・プラン・料金は楽天GORAで確認してください。</small></p>":"";
  const title=c.course_name+"（"+pre+"）｜料金・口コミ・服装・予約 | LAYR GOLF";
  const description=plain(c.course_caption).slice(0,86)||c.course_name+"のコース概要";
  const intro=description+"。平日・休日の料金目安、口コミ評価、ドレスコード、楽天GORAでの予約先を確認。";
  const breadcrumb=[["全国のゴルフ場","/courses"],[pre,areaLink(pre)],[c.course_name,path]];
  const content="<main class='detail-page'>"+crumb(breadcrumb)+"<div class='course-title'><p class='overline'>"+E(pre)+" / GOLF COURSE</p><h1>"+E(c.course_name)+"</h1><p>"+E(plain(c.editorial_nickname||c.course_caption).slice(0,180))+"</p></div>"+
- gallery(c)+"<div class='summary-layout'><div>"+facts(c)+"</div><aside class='booking-aside'><p>気になるコースが決まったら。</p>"+booking(c)+"<small>表示料金は参考価格。空き枠・プラン・最終料金は楽天GORAでご確認ください。</small></aside></div>"+
+ gallery(c)+"<div class='summary-layout'><div>"+facts(c)+"</div><aside class='booking-aside'><p>気になるコースが決まったら。</p>"+dateHTML+booking(c)+"<small>表示料金は参考価格。空き枠・プラン・最終料金は楽天GORAでご確認ください。</small></aside></div>"+
  "<div class='detail-content'><section class='editorial-section' id='about-course'><div class='section-label'>01 / COURSE</div><div><h2>どんなゴルフ場？</h2><p class='content-copy'>"+E(plain(c.course_caption||c.information||"詳細は楽天GORAの施設情報をご確認ください。"))+"</p><dl class='facts-plain'><div><dt>所在地</dt><dd>"+E(c.address||pre)+"</dd></div><div><dt>ホール / PAR</dt><dd>"+E(c.hole_count||"—")+" / "+E(c.par_count||"—")+"</dd></div><div><dt>コースタイプ</dt><dd>"+E(c.course_type||"—")+"</dd></div>"+(c.highway?"<div><dt>周辺の高速道路</dt><dd>"+E(c.highway)+"</dd></div>":"")+"</dl></div></section>"+
- dress(c)+seasons(data.seasons)+gear(data.ads)+"</div>"+
- "<div class='detail-bottom-booking'><h2>次のラウンドを予約する。</h2>"+booking(c)+"</div>"+promo()+"</main>"+related(nearby,id);
+ dress(c)+seasons(data.seasons)+gear(data.ads,playDate?.iso||"")+"</div>"+
+ "<div class='detail-bottom-booking'><h2>次のラウンドを予約する。</h2>"+dateHTML+booking(c)+"</div>"+promo()+"</main>"+related(nearby,id);
  const ld=[breadcrumbs(breadcrumb),courseSchema(c,path)];
  return wrap(title,intro,path,content,courseImages(c)[0],ld);
 }
@@ -173,7 +182,7 @@ export default async function handler(req,res) {
       const q=await courseListing(data.course.prefecture,1,5);
       nearby=q.rows;
      }catch{}
-     html=detailHTML(data,nearby);
+     html=detailHTML(data,nearby,readParam("date")||"");
     }
    }
   }else if(kind==="directory"||kind==="prefecture"){
