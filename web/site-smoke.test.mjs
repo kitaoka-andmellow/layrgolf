@@ -69,3 +69,28 @@ test("dress guide is server-rendered",()=>{
  assert.match(html,/ゴルフ場の服装/);
  assert.match(html,/予約前に確認/);
 });
+
+test("sticker UI reports only documented dress restrictions",()=>{
+ const rich={...sample,latitude:34.65,longitude:135.5,
+  jacket_required:true,collar_mentioned:true,sandals_banned:true,
+  golf_shoes_mentioned:false,dress_code_raw:"ジャケット着用。サンダル禁止。"};
+ const html=detailHTML({course:rich,seasons:[],ads:[]});
+ assert.match(html,/dress-sticker-showcase/);
+ assert.match(html,/ジャケット/);
+ assert.match(html,/サンダル/);
+ assert.match(html,/着用規定あり/);
+ assert.match(html,/禁止の記載あり/);
+ assert.match(html,/要確認/);
+ assert.match(html,/terrain-view/);
+ assert.match(html,/data-lat='34.65'/);
+ assert.match(html,/terrain-view.js/);
+ assert.match(html,/正確に再現した3Dモデルではありません/);
+});
+test("no invented terrain when course location is absent",()=>{
+ const html=detailHTML({course:{...sample,latitude:null,longitude:null},seasons:[],ads:[]});
+ assert.doesNotMatch(html,/class='terrain-view'/);
+});
+test("explicit jacket exemption supersedes unreliable extracted boolean",()=>{
+ const html=detailHTML({course:{...sample,jacket_required:true,dress_code_raw:"夏季はジャケットの着用は不要です"},seasons:[],ads:[]});
+ assert.match(html,/不要の明記あり/);
+});
