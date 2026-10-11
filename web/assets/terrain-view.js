@@ -28,6 +28,7 @@ function mapFailure(box,message){
 }
 async function initTerrain(box){
  const btn=box.querySelector(".terrain-launch"),holder=box.querySelector(".terrain-canvas");
+ const cover=box.querySelector(".terrain-cover");
  const fallback=box.querySelector(".terrain-fallback");
  const status=box.querySelector(".terrain-status");
  const lat=Number(box.dataset.lat),lon=Number(box.dataset.lon);
@@ -37,6 +38,7 @@ async function initTerrain(box){
  }
  btn.disabled=true;
  if(status)status.textContent="立体地形を読み込み中…";
+ cover.hidden=true;
  try{
   const lib=await loadSdk();
   if(!lib.supported())throw new Error("WebGL not supported");
@@ -84,8 +86,8 @@ async function initTerrain(box){
       status.textContent="標高データの取得に失敗しました。地図自体は操作できます。";
   });
  }catch(e){
-  holder.hidden=true;
-  mapFailure(box,"この端末では立体表示できません。地図のリンクから確認してください。");
+  holder.hidden=true;cover.hidden=false;
+  mapFailure(box,"この端末では立体表示できません。通常の地図から確認してください。");
  }
 }
 document.addEventListener("click",event=>{
