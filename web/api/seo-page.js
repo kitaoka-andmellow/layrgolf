@@ -1,11 +1,14 @@
 import {AREA_NAMES,AREA_SLUGS,BRAND,SITE_NAME,areaFromSlug,areaLink,origin,escapeHTML as e,plain,yen,safeUrl,goraLink,courseImages,validId,dateISO,jsonScript,queryPublic,courseById,courseListing} from "../lib/site-server.js";
+import {parseJapaneseDate} from "../assets/round-date.js";
 const E=e;
 const GORA_LOGO="/assets/rakuten-gora.png";
-const LAYR_PHOTO=BRAND+"/assets/first-view.png";
+const BRAND_ASSETS=BRAND+"/assets/";
+const LAYR_PHOTO=BRAND_ASSETS+"prod_01_long-fit.png";
+const LAYR_LOGO=BRAND_ASSETS+"brand_02_layr-wordmark.png";
 const escAttr=v=>E(v);
 function head(title,description,path,image="",ld=[],noindex=false){
   const url=origin()+path;
-  const og=safeUrl(image)||LAYR_PHOTO;
+  const og=safeUrl(image)||BRAND_ASSETS+'hero_01_main.png';
   let out="<meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>";
   out+="<title>"+E(title)+"</title><meta name='description' content='"+escAttr(description)+"'>";
   out+="<link rel='canonical' href='"+escAttr(url)+"'>";
@@ -15,12 +18,13 @@ function head(title,description,path,image="",ld=[],noindex=false){
   out+="<meta property='og:url' content='"+E(url)+"'><meta property='og:image' content='"+escAttr(og)+"'>";
   out+="<meta name='twitter:card' content='summary_large_image'>";
   if(noindex||process.env.VERCEL_ENV==="preview")out+="<meta name='robots' content='noindex,follow'>";
-  out+="<link rel='icon' href='/assets/layrgolf-logo-black.png'><link rel='stylesheet' href='/assets/finish.css?v=20261011'>";
+  out+="<link rel='icon' href='"+BRAND_ASSETS+"brand_01_layr-symbol.png'><link rel='stylesheet' href='/assets/finish.css?v=20261011b'>";
+  out+="<script src='/assets/brand-images.js?v=20261011b' defer></script>";
   for(const d of ld)out+="<script type='application/ld+json'>"+jsonScript(d)+"</script>";
   return out;
 }
 function topbar(){
-  return "<header class='site-header'><a class='site-brand' href='/' aria-label='全国ゴルフ場検索トップ'><img src='/assets/layrgolf-logo-black.png' alt='LAYR GOLF'><small>全国ゴルフ場検索</small></a>"+
+  return "<header class='site-header'><a class='site-brand' href='/' aria-label='全国ゴルフ場検索トップ'><img src='"+LAYR_LOGO+"' data-fallback-sources='"+BRAND_ASSETS+"layr-wordmark.png|/assets/layrgolf-logo-black.png' alt='LAYR GOLF' width='2048' height='682'><small>全国ゴルフ場検索</small></a>"+
     "<nav aria-label='メインナビゲーション' class='site-nav'><a href='/'>文章で探す</a><a href='/courses'>全国のゴルフ場</a><a href='/guide'>服装ガイド</a><a href='"+BRAND+"/' target='_blank' rel='noopener'>LAYR GOLF公式 ↗</a></nav></header>";
 }
 function footer(){
@@ -44,7 +48,7 @@ function booking(c){
   return "<a class='book-btn' href='"+E(url)+"' rel='sponsored nofollow noopener noreferrer' target='_blank'><span class='gora-reserve-brand'><img src='"+GORA_LOGO+"' alt='楽天GORA' width='100' height='53'></span><span><strong>楽天GORAで空き枠・プランを見る</strong><small>プレー日・人数・最終料金は予約先で確認</small></span><b aria-hidden='true'>↗</b><span class='pr-label'>PR</span></a>";
 }
 function promo(){
- return "<aside class='layr-promo' aria-label='LAYR GOLFのご案内'><a class='promo-photo' href='"+BRAND+"/#collection' aria-label='LAYR GOLFのインナー一覧を見る'><img loading='lazy' src='"+LAYR_PHOTO+"' alt='LAYR GOLF ゴルフに特化したインナー'></a>"+
+ return "<aside class='layr-promo' aria-label='LAYR GOLFのご案内'><a class='promo-photo' href='"+BRAND+"/#collection' aria-label='LAYR GOLFのインナー一覧を見る'><img loading='lazy' src='"+LAYR_PHOTO+"' data-fallback-sources='"+BRAND_ASSETS+"core-long-shorts.webp|"+BRAND_ASSETS+"1.png' alt='LAYR GOLF ゴルフに特化したインナー'></a>"+
  "<div><p class='overline'>LAYR GOLF / BASEWEAR</p><h2>ゴルフの一日を、<br>肌に近い一枚から。</h2><p>動きやすさと、長いラウンドの快適さを考えたゴルフ専用ベースウェア。</p><a class='line-link' href='"+BRAND+"/#collection' target='_blank' rel='noopener'>LAYR GOLFの商品を見る ↗</a><small class='pr-inline'>自社ブランドのご案内</small></div></aside>";
 }
 function gallery(c){
