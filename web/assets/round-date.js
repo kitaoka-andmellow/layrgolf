@@ -39,6 +39,15 @@ export function parseJapaneseDate(raw,reference=new Date()){
   if(/明後日|あさって/.test(s))return dateObject(addDays(today,2),today,"relative");
   if(/明日|あす/.test(s))return dateObject(addDays(today,1),today,"relative");
   if(/今日|本日/.test(s))return dateObject(today,today,"relative");
+  const weekend=s.match(/(再来週末|来週末|今週末|週末)/);
+  if(weekend){
+    const weeks=weekend[1]==="再来週末"?2:weekend[1]==="来週末"?1:0;
+    const startOfWeek=addDays(today,-((today.getUTCDay()+6)%7));
+    let saturday=addDays(startOfWeek,5+weeks*7);
+    if(weekend[1]==="週末"&&saturday<today)saturday=addDays(saturday,7);
+    if(weekend[1]==="今週末"&&saturday<today)saturday=addDays(saturday,7);
+    return dateObject(saturday,today,"relative");
+  }
   const rel=s.match(/(再来週|来週|今週|今度の)?\s*(?:の)?\s*(?:([月火水木金土日])曜日?|週末)/);
   if(rel){
     const pref=rel[1]||"";
