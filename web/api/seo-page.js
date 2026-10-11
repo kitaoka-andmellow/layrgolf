@@ -51,7 +51,7 @@ function gallery(c){
  const images=courseImages(c);
  if(!images.length)return "<div class='photo-empty'>コース画像は準備中です</div>";
  return "<div class='course-gallery'><figure class='gallery-main'><img src='"+E(images[0])+"' alt='"+E(c.course_name)+"のコース写真' fetchpriority='high'></figure>"+
- (images.length>1?"<div class='gallery-extra'>"+images.slice(1,5).map((url,i)=>"<figure><img src='"+E(url)+"' alt='"+E(c.course_name)+"の写真 "+(i+2)+"' loading='lazy'></figure>").join("")+"</div>":"")+"</div>";
+ (images.length>1?"<div class='gallery-extra gallery-count-"+Math.min(4,images.length-1)+"'>"+images.slice(1,5).map((url,i)=>"<figure><img src='"+E(url)+"' alt='"+E(c.course_name)+"の写真 "+(i+2)+"' loading='lazy'></figure>").join("")+"</div>":"")+"</div>";
 }
 function facts(c){
  const values=[["評価",Number(c.evaluation)>0?Number(c.evaluation).toFixed(1)+" / 5":"—"],["平日料金の目安",yen(c.weekday_min_price_yen)],["土日祝の目安",yen(c.holiday_min_price_yen)],["ホール数",c.hole_count||"—"]];
