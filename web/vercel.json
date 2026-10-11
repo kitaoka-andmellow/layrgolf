@@ -4,17 +4,25 @@
     {
       "source": "/assets/(.*)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
+        {"key": "Cache-Control", "value": "public, max-age=300, stale-while-revalidate=86400"},
+        {"key": "X-Content-Type-Options", "value": "nosniff"}
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"},
+        {"key": "X-Frame-Options", "value": "SAMEORIGIN"}
       ]
     }
   ],
   "rewrites": [
-    {
-      "source": "/course/:id",
-      "destination": "/detail?id=:id"
-    }
+    {"source": "/course/:id", "destination": "/api/seo-page?view=detail&id=:id"},
+    {"source": "/detail", "destination": "/api/seo-page?view=detail"},
+    {"source": "/courses", "destination": "/api/seo-page?view=directory"},
+    {"source": "/prefecture/:slug", "destination": "/api/seo-page?view=prefecture&slug=:slug"},
+    {"source": "/guide", "destination": "/api/seo-page?view=guide"},
+    {"source": "/sitemap.xml", "destination": "/api/sitemap"},
+    {"source": "/robots.txt", "destination": "/api/robots"}
   ]
 }
