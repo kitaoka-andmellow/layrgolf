@@ -1,5 +1,6 @@
 import {AREA_NAMES,AREA_SLUGS,BRAND,SITE_NAME,areaFromSlug,areaLink,origin,escapeHTML as e,plain,yen,safeUrl,goraLink,courseImages,validId,dateISO,jsonScript,queryPublic,courseById,courseListing} from "../lib/site-server.js";
 import {parseJapaneseDate} from "../assets/round-date.js";
+import {renderDressStickers} from "../lib/dress-stickers.js";
 const E=e;
 const GORA_LOGO="/assets/rakuten-gora.png";
 const BRAND_ASSETS=BRAND+"/assets/";
@@ -74,10 +75,25 @@ function courseSchema(c,path){
 function dress(c){
  const official=plain(c.dress_code_raw);
  return "<section class='editorial-section' id='dress'><div class='section-label'>02 / DRESS CODE</div><div><h2>当日の服装を確認する。</h2>"+
-  "<p class='content-copy'>"+E(official||"楽天GORAの掲載情報では服装規定を確認できませんでした。「服装自由」を意味するものではありません。来場前にゴルフ場の公式情報をご確認ください。")+"</p>"+
+  renderDressStickers(c)+"<div class='dress-source-label'>楽天GORA掲載の原文</div><p class='content-copy dress-original'>"+E(official||"楽天GORAの掲載情報では服装規定を確認できませんでした。「服装自由」を意味するものではありません。来場前にゴルフ場の公式情報をご確認ください。")+"</p>"+
   (plain(c.shoes_raw)?"<h3>シューズに関する記載</h3><p class='content-copy'>"+E(plain(c.shoes_raw))+"</p>":"")+
   "<p class='small-note'>来場時とプレー中で規定が異なる場合があります。季節による例外を含め、予約前に各施設の最新情報をご確認ください。</p>"+
   "<a href='/guide' class='line-link'>服装ルールの見方を知る →</a></div></section>";
+}
+function terrainView(c){
+ const lat=Number(c.latitude),lon=Number(c.longitude);
+ if(!Number.isFinite(lat)||!Number.isFinite(lon)||lat<20||lat>50||lon<122||lon>155)return "";
+ const mapUrl="https://www.openstreetmap.org/?mlat="+encodeURIComponent(lat)+"&mlon="+encodeURIComponent(lon)+"#map=14/"+encodeURIComponent(lat)+"/"+encodeURIComponent(lon);
+ return "<section class='terrain-section' id='terrain'><div class='terrain-topline'><div><p class='section-label'>EXPLORE THE LANDSCAPE / 03</p>"+
+  "<h2>この場所を、立体で見る。</h2><p>実際の地形の起伏や、周囲との位置関係を眺めてみよう。</p></div><div class='terrain-stamp'>3D<br>FIELD</div></div>"+
+  "<div class='terrain-view' data-lat='"+E(lat)+"' data-lon='"+E(lon)+"' aria-label='ゴルフ場周辺の3D地形ビュー'>"+
+    "<div class='terrain-cover'><span class='terrain-cover-art' aria-hidden='true'>⌁</span><b>THE TERRAIN<br>OF THIS PLACE.</b>"+
+      "<button type='button' class='terrain-launch'>3D地形を開く ↗</button></div>"+
+    "<div class='terrain-canvas' hidden></div>"+
+    "<div class='terrain-bottom'><p class='terrain-status' role='status'>地形データを読み込むと地図を操作できます。</p>"+
+      "<button type='button' class='terrain-mode' hidden>2D 地図で見る</button>"+
+      "<a class='terrain-fallback' href='"+E(mapUrl)+"' target='_blank' rel='noopener noreferrer'>通常の地図 ↗</a></div>"+
+    "</div><p class='small-note'>所在地周辺の実際の標高・地図を使用しています。各ホールの設計・グリーン形状を正確に再現した3Dモデルではありません。地図データ：OpenFreeMap / OpenStreetMap、地形：Mapterhorn。</p></section>";
 }
 function seasons(items){
  const season={"spring":"春","summer":"夏","autumn":"秋","winter":"冬"};
@@ -120,11 +136,11 @@ export function detailHTML(data,nearby=[],wishedDate=""){
  const description=plain(c.course_caption).slice(0,86)||c.course_name+"のコース概要";
  const intro=description+"。平日・休日の料金目安、口コミ評価、ドレスコード、楽天GORAでの予約先を確認。";
  const breadcrumb=[["全国のゴルフ場","/courses"],[pre,areaLink(pre)],[c.course_name,path]];
- const content="<main class='detail-page'>"+crumb(breadcrumb)+"<div class='course-title'><p class='overline'>"+E(pre)+" / GOLF COURSE</p><h1>"+E(c.course_name)+"</h1><p>"+E(plain(c.editorial_nickname||c.course_caption).slice(0,180))+"</p></div>"+
+ const content="<main class='detail-page'>"+crumb(breadcrumb)+"<div class='course-title'><p class='overline'>"+E(pre)+" / GOLF COURSE</p><h1>"+E(c.course_name)+"</h1><p>"+E(plain(c.editorial_nickname||c.course_caption).slice(0,180))+"</p><div class='course-quip'><span>THE COURSE SAYS...</span><strong>"+E(plain(c.course_caption||"このコースを詳しく見てみよう。").slice(0,70))+"</strong></div></div>"+
  gallery(c)+"<div class='summary-layout'><div>"+facts(c)+"</div><aside class='booking-aside'><p>気になるコースが決まったら。</p>"+dateHTML+booking(c)+"<small>表示料金は参考価格。空き枠・プラン・最終料金は楽天GORAでご確認ください。</small></aside></div>"+
  "<div class='detail-content'><section class='editorial-section' id='about-course'><div class='section-label'>01 / COURSE</div><div><h2>どんなゴルフ場？</h2><p class='content-copy'>"+E(plain(c.course_caption||c.information||"詳細は楽天GORAの施設情報をご確認ください。"))+"</p><dl class='facts-plain'><div><dt>所在地</dt><dd>"+E(c.address||pre)+"</dd></div><div><dt>ホール / PAR</dt><dd>"+E(c.hole_count||"—")+" / "+E(c.par_count||"—")+"</dd></div><div><dt>コースタイプ</dt><dd>"+E(c.course_type||"—")+"</dd></div>"+(c.highway?"<div><dt>周辺の高速道路</dt><dd>"+E(c.highway)+"</dd></div>":"")+"</dl></div></section>"+
- dress(c)+seasons(data.seasons)+gear(data.ads,playDate?.iso||"")+"</div>"+
- "<div class='detail-bottom-booking'><h2>次のラウンドを予約する。</h2>"+dateHTML+booking(c)+"</div>"+promo()+"</main>"+related(nearby,id);
+ dress(c)+terrainView(c)+seasons(data.seasons)+gear(data.ads,playDate?.iso||"")+"</div>"+
+ "<div class='detail-bottom-booking'><h2>次のラウンドを予約する。</h2>"+dateHTML+booking(c)+"</div>"+promo()+"<script src='/assets/terrain-view.js?v=20261011' defer></script></main>"+related(nearby,id);
  const ld=[breadcrumbs(breadcrumb),courseSchema(c,path)];
  return wrap(title,intro,path,content,courseImages(c)[0],ld);
 }
