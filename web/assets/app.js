@@ -1,3 +1,4 @@
+import {parseJapaneseDate} from "./round-date.js";
 const $ = s => document.querySelector(s);
 const results = $("#results");
 const form = $("#searchForm");
@@ -16,6 +17,21 @@ function yen(v){return Number(v)>0?`¥${Number(v).toLocaleString("ja-JP")}`:"要
 function idOf(c){return String(c.gora_course_id||"").replace(/\D/g,"").slice(0,12)}
 function clean(s=""){return String(s||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim()}
 function image(c){return c.image_url_1||c.image_url_2||""}
+function currentDate(){return parseJapaneseDate(query.value)}
+function detailHref(c){
+  const d=currentDate();
+  const base="/course/"+idOf(c);
+  return d&&!d.past?base+"?date="+encodeURIComponent(d.iso):base;
+}
+function updateDatePreview(){
+  const el=$("#datePreview");
+  if(!el)return;
+  const date=currentDate();
+  el.classList.toggle("has-date",Boolean(date&&!date.past));
+  el.textContent=date
+    ?date.past?"過去の日付です。希望日を確認してください。":"希望日："+date.label+" ／ 空き枠・当日の料金は予約先で確認"
+    :"日付・人数・予算・雰囲気も文章で入力できます。";
+}
 
 function dress(c){
   const raw=clean(c.dress_code_raw);
@@ -39,15 +55,15 @@ function reason(c,data){
   return xs.join(" / ");
 }
 function row(c,index,data){
-  const src=image(c), d=dress(c);
+  const src=image(c), d=dress(c), href=detailHref(c);
   return `<article class="course-row">
-    <a class="row-photo" href="/course/${idOf(c)}">
+    <a class="row-photo" href="${esc(href)}">
       ${src?`<img src="${esc(src)}" alt="${esc(c.course_name)}" loading="lazy">`:'<div class="row-photo-empty">NO IMAGE</div>'}
       <span class="row-index">${String(index+1+(currentPage-1)*24).padStart(2,"0")}</span>
     </a>
     <div class="row-main">
       <div class="row-meta">${esc(c.prefecture)}${c.course_type?` · ${esc(c.course_type)}`:""}</div>
-      <h3><a href="/course/${idOf(c)}">${esc(c.course_name)}</a></h3>
+      <h3><a href="${esc(href)}">${esc(c.course_name)}</a></h3>
       <p class="row-reason">${esc(reason(c,data)||"コース詳細から特徴を確認できます。")}</p>
       <div class="row-data">
         <span><small>評価</small><b>${Number(c.evaluation)>0?Number(c.evaluation).toFixed(1):"—"}</b></span>
@@ -57,11 +73,12 @@ function row(c,index,data){
       </div>
       <p class="row-dress ${d.label==="服装は要確認"?"unconfirmed":""}">${esc(d.label)}</p>
     </div>
-    <a class="row-open" href="/course/${idOf(c)}" aria-label="${esc(c.course_name)}の詳細を見る">詳細を見る <span>→</span></a>
+    <a class="row-open" href="${esc(href)}" aria-label="${esc(c.course_name)}の詳細を見る">詳細を見る <span>→</span></a>
   </article>`;
 }
 function chips(p={}){
   const xs=[];
+  if(p.playDateLabel) xs.push("希望日："+p.playDateLabel);
   if(p.prefectures?.length) xs.push(...p.prefectures.slice(0,4));
   if(p.budget) xs.push(`${p.priceMode==="holiday"?"土日祝":"平日"} ${yen(p.budget)}以内`);
   if(p.maxDifficulty!=null) xs.push("初心者向け");
@@ -94,7 +111,7 @@ function render(data){
   title.textContent=searched?"この条件で選ぶ。":"ゴルフ場を選ぶ。";
   $("#resultEyebrow").textContent=searched?"SEARCH RESULT":"COURSE LIST";
   count.textContent=`${data.total.toLocaleString("ja-JP")}件`;
-  filters.textContent=chips(data.parsed);
+  filters.textContent=chips(data.parsed)+(data.parsed?.playDateLabel?" ／ ※希望日の空き・料金は未確認":"");
   $("#moreArea").hidden=expanded||data.items.length<=visible.length;
   renderPager(data.total,data.limit,data.page);
 }
@@ -114,7 +131,8 @@ async function load(page=1,scroll=false){
     count.textContent="";
   }
 }
-form.addEventListener("submit",e=>{e.preventDefault();expanded=false;load(1,true)});
+form.addEventListener("submit",e=>{e.preventDefault();expanded=false;updateDatePreview();load(1,true)});
+query.addEventListener("input",updateDatePreview);
 sortSelect.addEventListener("change",()=>{expanded=true;load(1,false)});
 $("#showAll").addEventListener("click",()=>{expanded=true;if(lastData)render(lastData)});
 document.addEventListener("click",e=>{
@@ -127,4 +145,5 @@ query.value=initial.searchParams.get("q")||"";
 sortSelect.value=initial.searchParams.get("sort")||"recommended";
 currentPage=Math.max(1,Number(initial.searchParams.get("page")||1));
 expanded=currentPage>1;
+updateDatePreview();
 load(currentPage,false);
