@@ -47,7 +47,7 @@ const yen=x=>"¥"+Number(x).toLocaleString("ja-JP");
 
 function parseMoney(q){
  const m=q.match(/(\d{1,3}(?:\.\d{1,2})?)\s*万\s*円?\s*(以下|以内|まで|程度|くらい|ぐらい|前後)?/) ||
-   q.match(/(\d{1,3}(?:,\d{3})+|\d{4,6})\s*円?\s*(以下|以内|まで|程度|くらい|ぐらい|前後)?/);
+   q.match(/(\d{1,3}(?:,\d{3})+|\d{4,6})\s*円\s*(以下|以内|まで|程度|くらい|ぐらい|前後)?/);
  if(!m)return null;
  const amount=Math.round(Number(m[1].replace(/,/g,""))*(m[0].includes("万")?10000:1));
  if(amount<1500||amount>100000)return null;
