@@ -19,7 +19,7 @@ function head(title,description,path,image="",ld=[],noindex=false){
   out+="<meta property='og:url' content='"+E(url)+"'><meta property='og:image' content='"+escAttr(og)+"'>";
   out+="<meta name='twitter:card' content='summary_large_image'>";
   if(noindex||process.env.VERCEL_ENV==="preview")out+="<meta name='robots' content='noindex,follow'>";
-  out+="<link rel='icon' href='"+BRAND_ASSETS+"brand_01_layr-symbol.png'><link rel='stylesheet' href='/assets/finish.css?v=20261011b'>";
+  out+="<link rel='icon' href='"+BRAND_ASSETS+"brand_01_layr-symbol.png'><link rel='stylesheet' href='/assets/finish.css?v=20261011c'>";
   out+="<script src='/assets/brand-images.js?v=20261011b' defer></script>";
   for(const d of ld)out+="<script type='application/ld+json'>"+jsonScript(d)+"</script>";
   return out;
@@ -50,7 +50,7 @@ function booking(c){
 }
 function promo(){
  return "<aside class='layr-promo' aria-label='LAYR GOLFのご案内'><a class='promo-photo' href='"+BRAND+"/#collection' aria-label='LAYR GOLFのインナー一覧を見る'><img loading='lazy' src='"+LAYR_PHOTO+"' data-fallback-sources='"+BRAND_ASSETS+"prod_01_long-fit.png|"+BRAND_ASSETS+"1.png' alt='LAYR GOLF ゴルフに特化したインナー'></a>"+
- "<div><p class='overline'>LAYR GOLF / BASEWEAR</p><h2>ゴルフの一日を、<br>肌に近い一枚から。</h2><p>動きやすさと、長いラウンドの快適さを考えたゴルフ専用ベースウェア。</p><a class='line-link' href='"+BRAND+"/#collection' target='_blank' rel='noopener'>LAYR GOLFの商品を見る ↗</a><small class='pr-inline'>自社ブランドのご案内</small></div></aside>";
+ "<div><p class='overline'>LAYR GOLF / BASEWEAR</p><h2>ゴルフの一日を、肌に近い一枚から。</h2><p>動きやすさと着心地にこだわった、ゴルフ専用インナー。</p><a class='line-link' href='"+BRAND+"/#collection' target='_blank' rel='noopener'>LAYR GOLFの商品を見る ↗</a><small class='pr-inline'>自社ブランドのご案内</small></div></aside>";
 }
 function gallery(c){
  const images=courseImages(c);
