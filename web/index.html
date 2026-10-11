@@ -13,17 +13,17 @@
   <meta property="og:title" content="全国ゴルフ場検索｜写真・料金・服装で探す | LAYR GOLF">
   <meta property="og:description" content="場所、メンバー、予算、気分。文章で探して、写真と情報で選ぶ全国ゴルフ場検索。">
   <meta property="og:url" content="https://supabase-phi-brown.vercel.app/">
-  <meta property="og:image" content="https://layrgolf.andmellow.jp/assets/first-view.png">
+  <meta property="og:image" content="https://layrgolf.andmellow.jp/assets/hero_01_main.png">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="/assets/layrgolf-logo-black.png">
-  <link rel="stylesheet" href="/assets/finish.css?v=20261011">
+  <link rel="icon" href="https://layrgolf.andmellow.jp/assets/brand_01_layr-symbol.png">
+  <link rel="stylesheet" href="/assets/finish.css?v=20261011b">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"全国ゴルフ場検索 powered by LAYR GOLF","url":"https://supabase-phi-brown.vercel.app/","inLanguage":"ja-JP","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://supabase-phi-brown.vercel.app/?q={search_term_string}"},"query-input":"required name=search_term_string"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"LAYR GOLF","url":"https://layrgolf.andmellow.jp/","logo":"https://supabase-phi-brown.vercel.app/assets/layrgolf-logo-black.png"}</script>
 </head>
 <body class="home">
   <header class="site-header">
     <a class="site-brand" href="/" aria-label="全国ゴルフ場検索トップ">
-      <img src="/assets/layrgolf-logo-black.png" alt="LAYR GOLF" width="190" height="63">
+      <img src="https://layrgolf.andmellow.jp/assets/brand_02_layr-wordmark.png" data-fallback-sources="https://layrgolf.andmellow.jp/assets/layr-wordmark.png|/assets/layrgolf-logo-black.png" alt="LAYR GOLF" width="2048" height="682">
       <small>全国ゴルフ場検索</small>
     </a>
     <nav class="site-nav" aria-label="メインナビゲーション">
@@ -42,15 +42,19 @@
         <p class="home-intro">場所、メンバー、予算、気分。条件を並べるのではなく、次の一日を文章で。写真・料金・評価・服装まで、一つの場所で確かめられます。</p>
       </div>
       <div class="home-image">
-        <img src="https://layrgolf.andmellow.jp/assets/first-view.png" alt="ゴルフ場で過ごす、LAYR GOLFのラウンドスタイル" fetchpriority="high">
+        <img src="https://layrgolf.andmellow.jp/assets/hero_01_main.png" data-fallback-sources="https://layrgolf.andmellow.jp/assets/hero.webp|https://layrgolf.andmellow.jp/assets/first-view.png" alt="ゴルフ場で過ごす、LAYR GOLFのラウンドスタイル" fetchpriority="high">
         <span class="image-caption">PLAY LIGHTER.</span>
       </div>
-      <form class="search-panel" id="searchForm" role="search">
+      <form class="search-panel search-panel-featured" id="searchForm" role="search">
         <div class="form-main">
-          <label for="query">次のラウンド、どんな一日にしたい？</label>
-          <textarea id="query" rows="2" maxlength="500" autocomplete="off" placeholder="例：大阪から1時間くらい。初心者も一緒で、景色がよくて、土日1.3万円以内。"></textarea>
+          <p class="search-section-label">次のラウンドを探す</p>
+          <label for="query">いつ、誰と、どんなゴルフをしたい？</label>
+          <textarea id="query" rows="2" maxlength="500" autocomplete="off" placeholder="例：10月18日の日曜、大阪から1時間ほど。初心者と一緒で、予算は1.3万円以内。景色がいいところ。"></textarea>
         </div>
-        <button class="search-submit" type="submit">ゴルフ場を探す →</button>
+        <div class="search-actions">
+          <p class="date-preview" id="datePreview" aria-live="polite">日付・人数・予算・雰囲気も文章で入力できます。</p>
+          <button class="search-submit" type="submit">この条件で探す <span aria-hidden="true">→</span></button>
+        </div>
       </form>
     </section>
 
@@ -81,7 +85,7 @@
 
     <aside class="layr-promo" aria-label="LAYR GOLFのゴルフインナー">
       <a class="promo-photo" href="https://layrgolf.andmellow.jp/#collection" target="_blank" rel="noopener">
-        <img src="https://layrgolf.andmellow.jp/assets/first-view.png" loading="lazy" alt="LAYR GOLF ゴルフ専用インナーウェア">
+        <img src="https://layrgolf.andmellow.jp/assets/prod_01_long-fit.png" data-fallback-sources="https://layrgolf.andmellow.jp/assets/core-long-shorts.webp|https://layrgolf.andmellow.jp/assets/1.png" loading="lazy" alt="LAYR GOLF ゴルフ専用インナーウェア">
       </a>
       <div>
         <p class="overline">LAYR GOLF / BASEWEAR</p>
@@ -106,6 +110,7 @@
     <small>運営：株式会社アンドメロウ　｜　<a href="https://andmellow.jp/#about" target="_blank" rel="noopener">運営会社</a>　｜　<a href="mailto:support@andmellow.jp">お問い合わせ</a>　｜　<a href="https://andmellow.jp/privacy" target="_blank" rel="noopener">プライバシーポリシー</a>　© 2026 LAYR GOLF.</small>
   </footer>
   <noscript><p class="loading">JavaScriptを有効にするか、<a href="/courses">全国のゴルフ場一覧</a>からお探しください。</p></noscript>
-  <script src="/assets/app.js?v=20261011" type="module"></script>
+  <script src="/assets/brand-images.js?v=20261011b" defer></script>
+  <script src="/assets/app.js?v=20261011b" type="module"></script>
 </body>
 </html>
