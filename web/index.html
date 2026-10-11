@@ -1,73 +1,111 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f7f7f5">
-<title>全国ゴルフ場検索 powered by LAYR GOLF</title>
-<meta name="description" content="行きたいゴルフのイメージを文章で。全国のゴルフ場を写真・料金・評価・服装情報から探せます。">
-<link rel="stylesheet" href="/assets/styles.css?v=select-20261004">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f7f4">
+  <title>全国ゴルフ場検索｜写真・料金・服装で探す | LAYR GOLF</title>
+  <meta name="description" content="全国のゴルフ場を写真・料金・評価・ドレスコードで比較。誰とどんなゴルフをしたいか文章で伝えて検索。楽天GORAの予約先まで確認できます。">
+  <link rel="canonical" href="https://supabase-phi-brown.vercel.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:site_name" content="全国ゴルフ場検索 powered by LAYR GOLF">
+  <meta property="og:title" content="全国ゴルフ場検索｜写真・料金・服装で探す | LAYR GOLF">
+  <meta property="og:description" content="場所、メンバー、予算、気分。文章で探して、写真と情報で選ぶ全国ゴルフ場検索。">
+  <meta property="og:url" content="https://supabase-phi-brown.vercel.app/">
+  <meta property="og:image" content="https://layrgolf.andmellow.jp/assets/first-view.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/layrgolf-logo-black.png">
+  <link rel="stylesheet" href="/assets/finish.css?v=20261011">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"全国ゴルフ場検索 powered by LAYR GOLF","url":"https://supabase-phi-brown.vercel.app/","inLanguage":"ja-JP","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://supabase-phi-brown.vercel.app/?q={search_term_string}"},"query-input":"required name=search_term_string"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"LAYR GOLF","url":"https://layrgolf.andmellow.jp/","logo":"https://supabase-phi-brown.vercel.app/assets/layrgolf-logo-black.png"}</script>
 </head>
 <body class="home">
-<header class="topbar">
-  <a class="brand brand-with-logo" href="/">
-    <img src="/assets/layrgolf-logo-black.png" alt="LAYR GOLF">
-    <small>全国ゴルフ場検索</small>
-  </a>
-</header>
+  <header class="site-header">
+    <a class="site-brand" href="/" aria-label="全国ゴルフ場検索トップ">
+      <img src="/assets/layrgolf-logo-black.png" alt="LAYR GOLF" width="190" height="63">
+      <small>全国ゴルフ場検索</small>
+    </a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="#catalog">文章で探す</a>
+      <a href="/courses">全国のゴルフ場</a>
+      <a href="/guide">服装ガイド</a>
+      <a href="https://layrgolf.andmellow.jp/" target="_blank" rel="noopener">LAYR GOLF公式 ↗</a>
+    </nav>
+  </header>
 
-<main>
-  <section class="hero">
-    <div class="hero-copy">
-      <p class="hero-index">全国 2,278 コース</p>
-      <h1>行きたいゴルフを、<br>そのまま書く。</h1>
-      <p class="hero-lead">場所、メンバー、予算、気分。条件を選ぶのではなく、次の一日を文章で伝えてください。</p>
-    </div>
-
-    <form id="searchForm" class="search-panel" role="search">
-      <label for="query">どんなゴルフにしたい？</label>
-      <div class="sentence-row">
-        <textarea id="query" rows="2" maxlength="500" autocomplete="off" placeholder="大阪から1時間くらい。初心者も一緒で、景色がよくて、土日1.3万円以内。"></textarea>
-        <button class="search-submit" type="submit">探す <span aria-hidden="true">→</span></button>
-      </div>
-    </form>
-  </section>
-
-  <section class="catalog" id="catalog" aria-labelledby="resultTitle" aria-busy="true">
-    <div class="catalog-head">
+  <main>
+    <section class="home-hero" aria-labelledby="hero-title">
       <div>
-        <p class="eyebrow" id="resultEyebrow">COURSE LIST</p>
-        <h2 id="resultTitle">ゴルフ場を選ぶ。</h2>
-        <p id="activeFilters" class="interpreted"></p>
+        <p class="overline">全国のゴルフ場検索</p>
+        <h1 id="hero-title">行きたいゴルフを、<br>そのまま書く。</h1>
+        <p class="home-intro">場所、メンバー、予算、気分。条件を並べるのではなく、次の一日を文章で。写真・料金・評価・服装まで、一つの場所で確かめられます。</p>
       </div>
-      <div class="catalog-tools">
-        <span id="resultCount" role="status" aria-live="polite"></span>
-        <label class="sr-only" for="sortSelect">並び順</label>
-        <select id="sortSelect">
-          <option value="recommended">おすすめ順</option>
-          <option value="rating">評価が高い順</option>
-          <option value="weekday_price">平日料金が安い順</option>
-          <option value="holiday_price">土日祝料金が安い順</option>
-        </select>
+      <div class="home-image">
+        <img src="https://layrgolf.andmellow.jp/assets/first-view.png" alt="ゴルフ場で過ごす、LAYR GOLFのラウンドスタイル" fetchpriority="high">
+        <span class="image-caption">PLAY LIGHTER.</span>
       </div>
-    </div>
+      <form class="search-panel" id="searchForm" role="search">
+        <div class="form-main">
+          <label for="query">次のラウンド、どんな一日にしたい？</label>
+          <textarea id="query" rows="2" maxlength="500" autocomplete="off" placeholder="例：大阪から1時間くらい。初心者も一緒で、景色がよくて、土日1.3万円以内。"></textarea>
+        </div>
+        <button class="search-submit" type="submit">ゴルフ場を探す →</button>
+      </form>
+    </section>
 
-    <div id="results" class="course-list"></div>
+    <section class="home-results" id="catalog" aria-labelledby="resultTitle">
+      <div class="catalog-head">
+        <div>
+          <p class="eyebrow" id="resultEyebrow">COURSE DIRECTORY</p>
+          <h2 id="resultTitle">ゴルフ場を選ぶ。</h2>
+          <p id="activeFilters" class="interpreted"></p>
+        </div>
+        <div class="catalog-tools">
+          <span id="resultCount" aria-live="polite" role="status">コースを読み込み中</span>
+          <label class="sr-only" for="sortSelect">並び順</label>
+          <select id="sortSelect">
+            <option value="recommended">おすすめ順</option>
+            <option value="rating">評価が高い順</option>
+            <option value="weekday_price">平日料金が安い順</option>
+            <option value="holiday_price">土日祝料金が安い順</option>
+          </select>
+        </div>
+      </div>
+      <div id="results" class="course-list"><div class="loading">コース情報を読み込んでいます…</div></div>
+      <div class="more-area" id="moreArea" hidden><button id="showAll" type="button">さらに表示 →</button></div>
+      <nav id="pager" class="pager" aria-label="検索結果のページ"></nav>
+      <p class="catalog-note">料金は取得時点の目安です。最終価格・空き状況は楽天GORAでご確認ください。</p>
+      <p><a class="line-link" href="/courses">全国のコース一覧・都道府県別に探す →</a></p>
+    </section>
 
-    <div id="moreArea" class="more-area" hidden>
-      <button id="showAll" type="button">さらに表示 →</button>
-    </div>
+    <aside class="layr-promo" aria-label="LAYR GOLFのゴルフインナー">
+      <a class="promo-photo" href="https://layrgolf.andmellow.jp/#collection" target="_blank" rel="noopener">
+        <img src="https://layrgolf.andmellow.jp/assets/first-view.png" loading="lazy" alt="LAYR GOLF ゴルフ専用インナーウェア">
+      </a>
+      <div>
+        <p class="overline">LAYR GOLF / BASEWEAR</p>
+        <h2>ゴルフの一日を、<br>肌に近い一枚から。</h2>
+        <p>汗、冷え、動きづらさ。18ホールを軽やかに過ごすための、ゴルフ専用ベースウェア。</p>
+        <a class="line-link" href="https://layrgolf.andmellow.jp/#collection" target="_blank" rel="noopener">LAYR GOLFの商品を見る ↗</a>
+        <small class="pr-inline">自社ブランドのご案内</small>
+      </div>
+    </aside>
+  </main>
 
-    <nav id="pager" class="pager" aria-label="検索結果のページ"></nav>
-    <p class="catalog-note">料金は取得時点の最安目安です。プレー日・人数・追加料金は予約先でご確認ください。</p>
-  </section>
-</main>
-
-<footer>
-  <a href="https://layrgolf.andmellow.jp/">LAYR GOLF</a>
-  <p>写真・コース情報：楽天GORA。服装の記載がない場合も「自由」とは限りません。予約前に最新情報をご確認ください。</p>
-</footer>
-
-<script type="module" src="/assets/app.js?v=select-20261004"></script>
+  <footer class="site-footer">
+    <div><strong>全国ゴルフ場検索</strong><span>powered by LAYR GOLF</span></div>
+    <nav aria-label="フッターナビゲーション">
+      <a href="/">文章で探す</a>
+      <a href="/courses">全国のゴルフ場</a>
+      <a href="/guide">服装ガイド</a>
+      <a href="https://layrgolf.andmellow.jp/">LAYR GOLF公式</a>
+      <a href="https://layrgolf.andmellow.jp/#collection">商品を見る ↗</a>
+    </nav>
+    <div class="footer-source"><span>ゴルフ場のデータ・写真</span><img src="/assets/rakuten-gora.png" alt="楽天GORA" width="92" height="49"><span>掲載料金やドレスコードは変わる場合があります。予約前に施設の最新情報をご確認ください。</span></div>
+    <small>© 2026 LAYR GOLF.</small>
+  </footer>
+  <noscript><p class="loading">JavaScriptを有効にするか、<a href="/courses">全国のゴルフ場一覧</a>からお探しください。</p></noscript>
+  <script src="/assets/app.js?v=20261011" type="module"></script>
 </body>
 </html>
