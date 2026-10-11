@@ -4,8 +4,8 @@ import {renderDressStickers} from "../lib/dress-stickers.js";
 const E=e;
 const GORA_LOGO="/assets/rakuten-gora.png";
 const BRAND_ASSETS=BRAND+"/assets/";
-const LAYR_PHOTO=BRAND_ASSETS+"prod_01_long-fit.png";
-const LAYR_LOGO=BRAND_ASSETS+"brand_02_layr-wordmark.png";
+const LAYR_PHOTO=BRAND_ASSETS+"core-long-shorts.webp";
+const LAYR_LOGO=BRAND_ASSETS+"layr-wordmark.png";
 const escAttr=v=>E(v);
 function head(title,description,path,image="",ld=[],noindex=false){
   const url=origin()+path;
@@ -25,7 +25,7 @@ function head(title,description,path,image="",ld=[],noindex=false){
   return out;
 }
 function topbar(){
-  return "<header class='site-header'><a class='site-brand' href='/' aria-label='全国ゴルフ場検索トップ'><img src='"+LAYR_LOGO+"' data-fallback-sources='"+BRAND_ASSETS+"layr-wordmark.png|/assets/layrgolf-logo-black.png' alt='LAYR GOLF' width='2048' height='682'><small>全国ゴルフ場検索</small></a>"+
+  return "<header class='site-header'><a class='site-brand' href='/' aria-label='全国ゴルフ場検索トップ'><img src='"+LAYR_LOGO+"' data-fallback-sources='"+BRAND_ASSETS+"brand_02_layr-wordmark.png|/assets/layrgolf-logo-black.png' alt='LAYR GOLF' width='2048' height='682'><small>全国ゴルフ場検索</small></a>"+
     "<nav aria-label='メインナビゲーション' class='site-nav'><a href='/'>文章で探す</a><a href='/courses'>全国のゴルフ場</a><a href='/guide'>服装ガイド</a><a href='"+BRAND+"/' target='_blank' rel='noopener'>LAYR GOLF公式 ↗</a></nav></header>";
 }
 function footer(){
@@ -49,7 +49,7 @@ function booking(c){
   return "<a class='book-btn' href='"+E(url)+"' rel='sponsored nofollow noopener noreferrer' target='_blank'><span class='gora-reserve-brand'><img src='"+GORA_LOGO+"' alt='楽天GORA' width='100' height='53'></span><span><strong>楽天GORAで空き枠・プランを見る</strong><small>プレー日・人数・最終料金は予約先で確認</small></span><b aria-hidden='true'>↗</b><span class='pr-label'>PR</span></a>";
 }
 function promo(){
- return "<aside class='layr-promo' aria-label='LAYR GOLFのご案内'><a class='promo-photo' href='"+BRAND+"/#collection' aria-label='LAYR GOLFのインナー一覧を見る'><img loading='lazy' src='"+LAYR_PHOTO+"' data-fallback-sources='"+BRAND_ASSETS+"core-long-shorts.webp|"+BRAND_ASSETS+"1.png' alt='LAYR GOLF ゴルフに特化したインナー'></a>"+
+ return "<aside class='layr-promo' aria-label='LAYR GOLFのご案内'><a class='promo-photo' href='"+BRAND+"/#collection' aria-label='LAYR GOLFのインナー一覧を見る'><img loading='lazy' src='"+LAYR_PHOTO+"' data-fallback-sources='"+BRAND_ASSETS+"prod_01_long-fit.png|"+BRAND_ASSETS+"1.png' alt='LAYR GOLF ゴルフに特化したインナー'></a>"+
  "<div><p class='overline'>LAYR GOLF / BASEWEAR</p><h2>ゴルフの一日を、<br>肌に近い一枚から。</h2><p>動きやすさと、長いラウンドの快適さを考えたゴルフ専用ベースウェア。</p><a class='line-link' href='"+BRAND+"/#collection' target='_blank' rel='noopener'>LAYR GOLFの商品を見る ↗</a><small class='pr-inline'>自社ブランドのご案内</small></div></aside>";
 }
 function gallery(c){
