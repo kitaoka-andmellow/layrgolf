@@ -24,12 +24,12 @@ export function parseJapaneseDate(raw,reference=new Date()){
   if(!s.trim())return null;
   const p=parts(reference),today=utc(p.year,p.month,p.day);
   if(!today)return null;
-  let m=s.match(/(?:^|[^\d])((?:20)?\d{2})[\/\.\-年](\d{1,2})[\/\.\-月](\d{1,2})日?(?!\d)/);
+  let m=s.match(/(?:^|[^\d])((?:20)?\d{2})[\/\-年](\d{1,2})[\/\-月](\d{1,2})日?(?!\d)/);
   if(m){
     const year=Number(m[1])<100?2000+Number(m[1]):Number(m[1]);
     return dateObject(utc(year,Number(m[2]),Number(m[3])),today);
   }
-  m=s.match(/(?:^|[^\d])(\d{1,2})[\/\.\-月](\d{1,2})日?(?!\d)/);
+  m=s.match(/(?:^|[^\d])(\d{1,2})[\/\-月](\d{1,2})日?(?!\d)/);
   if(m){
     const month=Number(m[1]),day=Number(m[2]);
     let year=p.year,value=utc(year,month,day);
