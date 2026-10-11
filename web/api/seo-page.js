@@ -149,11 +149,16 @@ export default async function handler(req,res) {
  if(!["GET","HEAD"].includes(req.method||"GET")){res.setHeader("Allow","GET, HEAD");return res.status(405).send("");}
  res.setHeader("Content-Type","text/html; charset=utf-8");
  const url=new URL(req.url||"/","https://example.invalid");
- const kind=url.searchParams.get("view")||"detail";
+ // Vercel rewrites may expose params either in req.query or the original pathname.
+ const rq=req.query||{};
+ const fallbackCourse=url.pathname.match(/^\/course\/(\d{1,12})\/?$/);
+ const fallbackPref=url.pathname.match(/^\/prefecture\/([a-z]+)\/?$/);
+ const readParam=name=>typeof rq[name]==="string"?rq[name]:url.searchParams.get(name);
+ const kind=readParam("view")||(fallbackCourse?"detail":fallbackPref?"prefecture":url.pathname==="/courses"?"directory":url.pathname==="/guide"?"guide":"detail");
  let code=200,html;
  try{
   if(kind==="detail"){
-   const id=url.searchParams.get("id");
+   const id=readParam("id")||fallbackCourse?.[1];
    if(!validId(id)){code=404;html=errorHTML(404);}
    else{
     const data=await courseById(id);
@@ -168,9 +173,9 @@ export default async function handler(req,res) {
     }
    }
   }else if(kind==="directory"||kind==="prefecture"){
-   const slug=url.searchParams.get("slug")||"";
+   const slug=readParam("slug")||fallbackPref?.[1]||"";
    const pref=kind==="prefecture"?areaFromSlug(slug):"";
-   const p=url.searchParams.get("page")||"1";
+   const p=readParam("page")||"1";
    if((kind==="prefecture"&&!pref)||!/^[1-9]\d{0,3}$/.test(p)){code=404;html=errorHTML(404);}
    else{
     const page=Number(p),result=await courseListing(pref,page,24);
