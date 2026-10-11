@@ -46,7 +46,7 @@ function updateDatePreview(){
 
 function dress(c){
   const raw=clean(c.dress_code_raw);
-  if(raw) return {label:"服装ルールあり",detail:raw};
+  if(raw||c.dress_code_status==="api_verified") return {label:"服装ルールの掲載あり",detail:raw};
   return {label:"服装は要確認",detail:"掲載情報では服装指定を確認できません。服装自由を意味しません。"};
 }
 function reason(c,data){
@@ -66,6 +66,15 @@ function reason(c,data){
   }
   return xs;
 }
+function miniWear(c){
+  const badges=[];
+  const svg=(type)=>type==="jacket"
+    ?'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m8 3-5 3-1 14h6l1-9 3 2 3-2 1 9h6L21 6l-5-3-4 5z"/><path d="m8 3 4 5 4-5"/></svg>'
+    :'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 16c0-3 1-6 5-9 2-1 4-1 6 1l4 10c1 3-1 4-5 4H9c-4 0-5-3-4-6z"/><path d="m9 9 6 6m1-7-5 9"/></svg>';
+  if(c.jacket_required===true)badges.push('<span class="mini-wear-sticker mini-jacket">'+svg("jacket")+'ジャケット規定の言及あり</span>');
+  if(c.sandals_banned===true)badges.push('<span class="mini-wear-sticker mini-sandals">'+svg("sandal")+'サンダル規定の言及あり</span>');
+  return badges.join("");
+}
 function row(c,index,data){
   const src=image(c), d=dress(c), href=detailHref(c);
   return `<article class="course-row">
@@ -83,7 +92,7 @@ function row(c,index,data){
         <span><small>土日祝</small><b>${yen(c.holiday_min_price_yen)}</b></span>
         <span><small>ホール</small><b>${esc(c.hole_count||"—")}</b></span>
       </div>
-      <p class="row-dress ${d.label==="服装は要確認"?"unconfirmed":""}">${esc(d.label)}</p>
+      <div class="row-dress-tags">${miniWear(c)}<span class="row-dress ${d.label==="服装は要確認"?"unconfirmed":""}">${esc(d.label)}</span></div>
     </div>
     <a class="row-open" href="${esc(href)}" aria-label="${esc(c.course_name)}の詳細を見る">詳細を見る <span>→</span></a>
   </article>`;
