@@ -1,4 +1,5 @@
 import {parseJapaneseDate} from "./round-date.js";
+import {parseQuery as understand} from "../lib/course-matcher.js";
 const $ = s => document.querySelector(s);
 const results = $("#results");
 const form = $("#searchForm");
@@ -23,6 +24,16 @@ function detailHref(c){
   const base="/course/"+idOf(c);
   return d&&!d.past?base+"?date="+encodeURIComponent(d.iso):base;
 }
+function updateIntentPreview(){
+  const out=$("#intentPreview");if(!out)return;
+  const q=query.value.trim();
+  if(!q){out.innerHTML="";return;}
+  const p=understand(q);
+  const chunks=(p.understood||[]).slice(0,5);
+  out.innerHTML=chunks.length
+    ?"<strong>この希望を読み取りました ↗</strong>"+chunks.map(x=>"<span>"+esc(x)+"</span>").join("")
+    :"<strong>文章の希望を組み合わせて探します ↗</strong>";
+}
 function updateDatePreview(){
   const el=$("#datePreview");
   if(!el)return;
@@ -40,6 +51,7 @@ function dress(c){
 }
 function reason(c,data){
   const p=data?.parsed||{};
+  if(Array.isArray(c.match_reasons)&&c.match_reasons.length)return c.match_reasons.slice(0,2).join(" ・ ");
   const xs=[];
   if(p.prefectures?.includes(c.prefecture)) xs.push(c.prefecture);
   if(p.budget){
@@ -52,7 +64,7 @@ function reason(c,data){
     const caption=clean(c.editorial_feature_summary||c.course_caption);
     if(caption) xs.push(caption.slice(0,48)+(caption.length>48?"…":""));
   }
-  return xs.join(" / ");
+  return xs;
 }
 function row(c,index,data){
   const src=image(c), d=dress(c), href=detailHref(c);
@@ -64,7 +76,7 @@ function row(c,index,data){
     <div class="row-main">
       <div class="row-meta">${esc(c.prefecture)}${c.course_type?` · ${esc(c.course_type)}`:""}</div>
       <h3><a href="${esc(href)}">${esc(c.course_name)}</a></h3>
-      <p class="row-reason">${esc(reason(c,data)||"コース詳細から特徴を確認できます。")}</p>
+      ${query.value.trim()&&c.match_reasons?.length?`<div class="match-bubble"><span class="match-bubble__badge">PICK UP ↗</span><span class="match-bubble__text">${esc(reason(c,data))}</span></div>`:`<p class="row-reason">${esc(reason(c,data)||"コース詳細から特徴を確認できます。")}</p>`}
       <div class="row-data">
         <span><small>評価</small><b>${Number(c.evaluation)>0?Number(c.evaluation).toFixed(1):"—"}</b></span>
         <span><small>平日</small><b>${yen(c.weekday_min_price_yen)}</b></span>
@@ -77,6 +89,7 @@ function row(c,index,data){
   </article>`;
 }
 function chips(p={}){
+  if(Array.isArray(p.understood)&&p.understood.length)return p.understood;
   const xs=[];
   if(p.playDateLabel) xs.push("希望日："+p.playDateLabel);
   if(p.prefectures?.length) xs.push(...p.prefectures.slice(0,4));
@@ -111,7 +124,10 @@ function render(data){
   title.textContent=searched?"この条件で選ぶ。":"ゴルフ場を選ぶ。";
   $("#resultEyebrow").textContent=searched?"SEARCH RESULT":"COURSE LIST";
   count.textContent=`${data.total.toLocaleString("ja-JP")}件`;
-  filters.textContent=chips(data.parsed)+(data.parsed?.playDateLabel?" ／ ※希望日の空き・料金は未確認":"");
+  const applied=chips(data.parsed);
+  filters.innerHTML=applied.map(x=>`<span class="intent-filter">${esc(x)}</span>`).join("")+
+    (data.parsed?.notices?.length?`<span class="search-warning">${esc(data.parsed.notices.slice(0,2).join(" "))}</span>`:"");
+
   $("#moreArea").hidden=expanded||data.items.length<=visible.length;
   renderPager(data.total,data.limit,data.page);
 }
@@ -132,7 +148,7 @@ async function load(page=1,scroll=false){
   }
 }
 form.addEventListener("submit",e=>{e.preventDefault();expanded=false;updateDatePreview();load(1,true)});
-query.addEventListener("input",updateDatePreview);
+query.addEventListener("input",()=>{updateDatePreview();updateIntentPreview();});
 sortSelect.addEventListener("change",()=>{expanded=true;load(1,false)});
 $("#showAll").addEventListener("click",()=>{expanded=true;if(lastData)render(lastData)});
 document.addEventListener("click",e=>{
@@ -146,4 +162,5 @@ sortSelect.value=initial.searchParams.get("sort")||"recommended";
 currentPage=Math.max(1,Number(initial.searchParams.get("page")||1));
 expanded=currentPage>1;
 updateDatePreview();
+updateIntentPreview();
 load(currentPage,false);
