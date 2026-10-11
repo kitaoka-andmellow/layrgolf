@@ -11,7 +11,7 @@ function svg(which) {
 }
 export function dressFacts(c){
  const raw=String(c.dress_code_raw||"");
- const jacket=c.jacket_required===true?["着用規定あり","caution"]:/ジャケット.{0,14}(不要|必要なし|着用自由)/.test(raw)?["不要の明記あり","positive"]:["要確認","unknown"];
+ const jacket=/(?:ジャケット|上着).{0,16}(不要|必要なし|着用自由|着用は不要|着なくてよい)/.test(raw)?["不要の明記あり","positive"]:c.jacket_required===true?["着用規定あり","caution"]:["要確認","unknown"];
  const collar=c.collar_mentioned===true?["襟の記載あり","positive"]:["要確認","unknown"];
  const sandal=c.sandals_banned===true?["禁止の記載あり","caution"]:["要確認","unknown"];
  const shoes=c.golf_shoes_mentioned===true?["指定に言及","positive"]:["要確認","unknown"];
