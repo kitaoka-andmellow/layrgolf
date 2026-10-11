@@ -60,7 +60,7 @@ export async function courseListing(pref="",page=1,limit=24) {
   return queryPublic("courses",q,true);
 }
 export async function sitemapCourses() {
-  const fields="gora_course_id,prefecture,fetched_at";
+  const fields="gora_course_id,prefecture,fetched_at,image_url_1";
   let offset=0,all=[];
   for(let i=0;i<20;i++){
     const r=await queryPublic("courses",{select:fields,active:"eq.true",detail_ready:"eq.true",order:"gora_course_id.asc",limit:500,offset},true);
