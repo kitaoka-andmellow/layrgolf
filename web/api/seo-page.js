@@ -27,7 +27,7 @@ function footer(){
   return "<footer class='site-footer'><div><strong>全国ゴルフ場検索</strong><span>powered by LAYR GOLF</span></div>"+
   "<nav aria-label='フッターナビゲーション'><a href='/'>ゴルフ場を探す</a><a href='/courses'>全国のゴルフ場</a><a href='/guide'>服装の基礎</a><a href='"+BRAND+"/'>LAYR GOLFブランド</a><a href='"+BRAND+"/#collection'>商品一覧 ↗</a></nav>"+
   "<div class='footer-source'><span>ゴルフ場のデータ・写真</span><img src='"+GORA_LOGO+"' alt='楽天GORA' width='92' height='49'><span>掲載料金や服装ルールは変わる場合があります。予約前に公式情報をご確認ください。</span></div>"+
-  "<small>© 2026 LAYR GOLF. 掲載情報の正確性・最新性は各施設の公式案内をご確認ください。</small></footer>";
+  "<small>運営：株式会社アンドメロウ　｜　<a href='https://andmellow.jp/#about' target='_blank' rel='noopener'>運営会社</a>　｜　<a href='mailto:support@andmellow.jp'>お問い合わせ</a>　｜　<a href='https://andmellow.jp/privacy' target='_blank' rel='noopener'>プライバシーポリシー</a><span> © 2026 LAYR GOLF. 掲載情報の正確性・最新性は各施設の公式案内をご確認ください。</span></small></footer>";
 }
 function wrap(title,description,path,content,image="",ld=[],noindex=false){
   return "<!doctype html><html lang='ja'><head>"+head(title,description,path,image,ld,noindex)+"</head><body>"+topbar()+content+footer()+"</body></html>";
