@@ -244,3 +244,40 @@ body{background:var(--bg);color:var(--ink)}
 @media(max-width:700px){.photo-chat{left:-7px;bottom:22px;font-size:9px;padding:6px 8px}}
 
 .row-dress-tags{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:12px}.row-dress-tags .row-dress{margin:0}.mini-wear-sticker{display:inline-flex;gap:5px;align-items:center;font-size:10px;font-weight:800;border:1px solid #1d3627;padding:5px 7px;transform:rotate(-1deg);background:#f4dfa5;white-space:nowrap}.mini-wear-sticker svg{flex-shrink:0}.mini-sandals{background:#f4bca6;transform:rotate(1deg)}
+
+
+/* Compact LAYR placement: a supporting credit, not a second hero. */
+.layr-promo{
+  width:calc(100% - 40px);max-width:880px!important;
+  min-height:0!important;grid-template-columns:168px minmax(0,1fr)!important;
+  gap:0!important;margin:34px auto 24px!important;
+  background:transparent!important;border-top:1px solid var(--rule)!important;
+  border-bottom:1px solid var(--rule)!important
+}
+.layr-promo .promo-photo{
+  height:140px!important;min-height:0!important;
+  aspect-ratio:auto!important;display:block
+}
+.layr-promo .promo-photo img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 25%}
+.layr-promo>div{
+  min-width:0;padding:18px 26px!important;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:0!important
+}
+.layr-promo .overline{font-size:9px!important;letter-spacing:.08em!important;margin:0 0 4px!important}
+.layr-promo h2{font-size:18px!important;line-height:1.45!important;letter-spacing:-.035em!important;margin:0 0 5px!important;max-width:100%}
+.layr-promo p:not(.overline){font-size:11px!important;line-height:1.6!important;margin:0 0 5px!important;max-width:100%}
+.layr-promo .line-link{font-size:11px!important;padding:3px 0!important;margin-top:0!important}
+.layr-promo .pr-inline{font-size:9px!important;margin-top:4px!important}
+@media(max-width:700px){
+  .layr-promo{
+    width:calc(100% - 36px);grid-template-columns:100px minmax(0,1fr)!important;
+    margin:26px 18px!important;display:grid!important
+  }
+  .layr-promo .promo-photo{height:132px!important;min-height:0!important}
+  .layr-promo>div{padding:11px 14px!important}
+  .layr-promo h2{font-size:14px!important;margin-bottom:6px!important;line-height:1.35!important}
+  .layr-promo p:not(.overline){display:none}
+  .layr-promo .overline{font-size:8px!important}
+  .layr-promo .line-link{font-size:10px!important}
+  .layr-promo .pr-inline{font-size:8px!important}
+}
