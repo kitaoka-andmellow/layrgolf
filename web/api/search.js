@@ -63,8 +63,8 @@ async function fetchAllCourses() {
 function yenFromQuery(q) {
   let m = q.match(/([0-9]+(?:\.[0-9]+)?)\s*万\s*円?\s*(?:以下|以内|まで)/);
   if (m) return Math.round(parseFloat(m[1]) * 10000);
-  m = q.match(/([0-9]{4,6})\s*円\s*(?:以下|以内|まで)/);
-  return m ? parseInt(m[1], 10) : null;
+  m = q.match(/([0-9][0-9,]{3,7})\s*円\s*(?:以下|以内|まで)/);
+  return m ? parseInt(m[1].replace(/,/g,""), 10) : null;
 }
 
 export function parseQuery(raw) {
@@ -92,7 +92,7 @@ export function parseQuery(raw) {
   }
   // Pseudo travel-radius search. It intentionally does not claim actual drive time.
   for (const [origin, list] of Object.entries(ORIGIN_MAP)) {
-    const m = q.match(new RegExp(`${origin}から[^\n]{0,16}?([0-9]+(?:\.[0-9]+)?)\s*時間`));
+    const m = q.match(new RegExp(`${origin}から[^\n]{0,16}?([0-9]+(?:\.[0-9]+)?)\\s*時間`));
     if (m) {
       parsed.originApprox = `${origin}起点・約${m[1]}時間`;
       parsed.prefectures.push(...list);
