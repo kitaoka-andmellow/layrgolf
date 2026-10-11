@@ -16,7 +16,7 @@
   <meta property="og:image" content="https://layrgolf.andmellow.jp/assets/hero_01_main.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="https://layrgolf.andmellow.jp/assets/brand_01_layr-symbol.png">
-  <link rel="stylesheet" href="/assets/finish.css?v=20261011b">
+  <link rel="stylesheet" href="/assets/finish.css?v=playfield-20261011">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"全国ゴルフ場検索 powered by LAYR GOLF","url":"https://supabase-phi-brown.vercel.app/","inLanguage":"ja-JP","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://supabase-phi-brown.vercel.app/?q={search_term_string}"},"query-input":"required name=search_term_string"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"LAYR GOLF","url":"https://layrgolf.andmellow.jp/","logo":"https://supabase-phi-brown.vercel.app/assets/layrgolf-logo-black.png"}</script>
 </head>
@@ -44,6 +44,7 @@
       <div class="home-image">
         <img src="https://layrgolf.andmellow.jp/assets/hero_01_main.png" data-fallback-sources="https://layrgolf.andmellow.jp/assets/hero.webp|https://layrgolf.andmellow.jp/assets/first-view.png" alt="ゴルフ場で過ごす、LAYR GOLFのラウンドスタイル" fetchpriority="high">
         <span class="image-caption">PLAY LIGHTER.</span>
+        <span class="photo-chat" aria-hidden="true">GOOD DAYS<br>START HERE! ✳</span>
       </div>
       <form class="search-panel search-panel-featured" id="searchForm" role="search">
         <div class="form-main">
@@ -53,6 +54,7 @@
         </div>
         <div class="search-actions">
           <p class="date-preview" id="datePreview" aria-live="polite">日付・人数・予算・雰囲気も文章で入力できます。</p>
+          <div class="intent-preview" id="intentPreview" aria-live="polite"></div>
           <button class="search-submit" type="submit">この条件で探す <span aria-hidden="true">→</span></button>
         </div>
       </form>
@@ -111,6 +113,6 @@
   </footer>
   <noscript><p class="loading">JavaScriptを有効にするか、<a href="/courses">全国のゴルフ場一覧</a>からお探しください。</p></noscript>
   <script src="/assets/brand-images.js?v=20261011b" defer></script>
-  <script src="/assets/app.js?v=20261011b" type="module"></script>
+  <script src="/assets/app.js?v=playfield-20261011" type="module"></script>
 </body>
 </html>
